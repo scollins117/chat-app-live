@@ -15,14 +15,28 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
+
+    // get all users
     users: async () => {
       return User.find()
         .select('-__v -password')
         },
+    // get all users
     user: async (parent, { username }) => {
       return User.findOne({ username })
         .select('-__v -password')
         
+    },
+
+    // get message with param option username
+    messages: async (parent, { username }) => {
+      const params = username ? { username } : {};
+      return Message.find(params).sort({ createdAt: -1 });
+    },
+
+    // get a single message
+    message: async (parent, { _id }) => {
+      return Message.findOne({ _id });
     },
   },
 
