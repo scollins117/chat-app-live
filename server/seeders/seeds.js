@@ -1,15 +1,16 @@
-const faker = require('faker');
+const faker = require("faker");
 
-const db = require('../config/connection');
-const { User, Message } = require('../models');
+const db = require("../config/connection");
+const { Message, User } = require("../models");
 
-db.once('open', async () => {
+db.once("open", async () => {
+  await Message.deleteMany({});
   await User.deleteMany({});
 
   // create user data
   const userData = [];
 
-  for (let i = 0; i < 50; i += 1) {
+  for (let i = 0; i < 10; i += 1) {
     const username = faker.internet.userName();
     const email = faker.internet.email(username);
     const password = faker.internet.password();
@@ -17,13 +18,16 @@ db.once('open', async () => {
     userData.push({ username, email, password });
   }
 
-// create messages
+  const createdUsers = await User.collection.insertMany(userData);
+  const userList = await User.find({});
+
+  // create messages
   let createdMessages = [];
   for (let i = 0; i < 100; i += 1) {
     const messageText = faker.lorem.words(Math.round(Math.random() * 20) + 1);
 
-    const randomUserIndex = Math.floor(Math.random() * createdUsers.ops.length);
-    const { username, _id: userId } = createdUsers.ops[randomUserIndex];
+    const randomUserIndex = Math.floor(Math.random() * userList.length);
+    const { username, _id: userId } = userList[randomUserIndex];
 
     const createdMessage = await Message.create({ messageText, username });
 
@@ -35,6 +39,6 @@ db.once('open', async () => {
     createdMessages.push(createdMessage);
   }
 
-  console.log('all done!');
+  console.log("all done!");
   process.exit(0);
 });
