@@ -12,11 +12,11 @@ import {
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 
-
-import Header from "./components/Header"; 
+import Header from "./components/Header";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-// import Home from './pages/Home';
+import NoMatch from "./pages/NoMatch";
+import Home from "./pages/Home";
 
 // const link = new WebSocketLink({
 //   uri: `ws://localhost:3000/`,
@@ -53,9 +53,10 @@ function App() {
               <Header />
               <div className="container">
                 <Switch>
+                  <Route exact path="/" component={Home} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
-                  {/* <Route exact path="/home" component={Home} /> */}
+                  <Route component={NoMatch} />
                 </Switch>
               </div>
               {/* <Footer  */}

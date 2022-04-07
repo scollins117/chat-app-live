@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { LOGIN } from "../utils/mutations";
+import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const Login = (props) => {
   const [formState, setFormState] = useState({ email: "", password: "" });
-  const [login, { error }] = useMutation(LOGIN);
+  const [login, { error }] = useMutation(LOGIN_USER);
 
   // update state based on form input changes
   const handleChange = (event) => {
@@ -36,23 +36,17 @@ const Login = (props) => {
 
     try {
       const { data } = await login({
-        variables: { ...formState },
+        variables: { ...formState }
       });
-
+    
       Auth.login(data.login.token);
     } catch (e) {
       console.error(e);
     }
-
-    // clear form values
-    setFormState({
-      email: "",
-      password: "",
-    });
   };
 
   const theme = createTheme();
-  
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -65,8 +59,7 @@ const Login = (props) => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary" }}>
-          </Avatar>
+          <Avatar sx={{ m: 1, bgcolor: "secondary" }}></Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>

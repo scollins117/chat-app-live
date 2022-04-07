@@ -12,7 +12,8 @@ const typeDefs = gql`
     _id: ID
     messageText: String
     createdAt: String
-    username: String
+    from: String
+    to: String
   }
 
   type Auth {
@@ -24,7 +25,7 @@ const typeDefs = gql`
     me: User
     users: [User]
     user(username: String!): User
-    messages(username: String): [Message]
+    messages: [Message]
     message(_id: ID!): Message
   }
 
