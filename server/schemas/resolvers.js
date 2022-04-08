@@ -6,9 +6,9 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        const userData = await User.findOne({ _id: context.user._id }).select(
-          "-__v -password"
-        );
+        const userData = await User.findOne({ _id: context.user._id })
+          .select("-__v -password")
+          .populate("friends");
 
         return userData;
       }
@@ -18,13 +18,17 @@ const resolvers = {
 
     // get all users
     users: async () => {
-      return User.find().select("-__v -password").populate("messages");
+      return User.find()
+        .select("-__v -password")
+        .populate("messages")
+        .populate("friends");
     },
     // get all users
     user: async (parent, { username }) => {
       return User.findOne({ username })
         .select("-__v -password")
-        .populate("messages");
+        .populate("messages")
+        .populate("friends");
     },
 
     // get message with param option username
@@ -82,6 +86,8 @@ const resolvers = {
     },
     addFriend: async (parent, { friendId }, context) => {
       if (context.user) {
+        console.log("my id: ", context.user._id);
+        console.log("friend id: ", friendId);
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $addToSet: { friends: friendId } },

@@ -61,7 +61,7 @@ const Chatbox = () => {
             fullWidth
           />
         </Grid>
-        <Grid xs={1} align="right">
+        <Grid item xs={1} align="right">
           <Fab color="primary" aria-label="add">
             {/* <SendIcon /> */}
           </Fab>
