@@ -35,8 +35,13 @@ const Header = () => {
   };
 
   const handleCloseNavMenu = (event) => {
-    console.log("logged in = ", loggedIn)
-    console.log(event.target.innerText)
+    if (event.target.innerText === "CHATS") {
+      if (loggedIn) {
+        window.location.assign('/chats');
+      } else {
+        window.location.assign('/login')
+      }
+    }
     if (event.target.innerText === "DASHBOARD") {
       if (loggedIn) {
         window.location.assign('/dashboard');

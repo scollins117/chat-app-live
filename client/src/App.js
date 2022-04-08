@@ -14,6 +14,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 
 import Header from "./components/Header";
+import Chat from "./pages/Chat";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -69,6 +70,7 @@ function App() {
                   <Route exact path="/dashboard" component={Dashboard} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
+                  <Route exact path="/chats" component={Chat} />
                   <Route component={NoMatch} />
                 </Switch>
               </div>

@@ -11,7 +11,6 @@ const Dashboard = () => {
   const messages = data?.messages || [];
 
   const loggedIn = Auth.loggedIn();
-  console.log("logged in = ", loggedIn)
 
   return (
     <main>
