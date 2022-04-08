@@ -18,8 +18,8 @@ const pages = ["Dashboard", "Chats"];
 const settings = ["Profile", "Account", "Logout"];
 
 const Header = () => {
-  const loggedIn = true;
 
+  const loggedIn = Auth.loggedIn();
   const logout = event => {
     Auth.logout();
   };
@@ -34,7 +34,16 @@ const Header = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (event) => {
+    console.log("logged in = ", loggedIn)
+    console.log(event.target.innerText)
+    if (event.target.innerText === "DASHBOARD") {
+      if (loggedIn) {
+        window.location.assign('/dashboard');
+      } else {
+        window.location.assign('/login')
+      }
+    }
     setAnchorElNav(null);
   };
 

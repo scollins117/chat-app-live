@@ -13,7 +13,11 @@ const messageSchema = new Schema(
       default: Date.now,
       get: (timestamp) => dateFormat(timestamp),
     },
-    username: {
+    from: {
+      type: String,
+      required: true,
+    },
+    to: {
       type: String,
       required: true,
     },

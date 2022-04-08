@@ -33,6 +33,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     sendMessage(messageText: String!): Message
+    addFriend(friendId: ID!): User
   }
 
   type Subscription {

@@ -10,6 +10,7 @@ export const QUERY_ME = gql`
         _id
         messageText
         createdAt
+        from
             }
         }
     }

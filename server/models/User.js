@@ -28,6 +28,12 @@ const userSchema = new Schema(
         ref: 'Message'
       }
     ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ]
   },
   {
     toJSON: {
@@ -51,9 +57,9 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-// userSchema.virtual('friendCount').get(function() {
-//   return this.friends.length;
-// });
+userSchema.virtual('friendCount').get(function() {
+  return this.friends.length;
+});
 
 const User = mongoose.model("User", userSchema);
 

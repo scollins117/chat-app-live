@@ -21,15 +21,34 @@ db.once("open", async () => {
   const createdUsers = await User.collection.insertMany(userData);
   const userList = await User.find({});
 
+  // create friends
+  for (let i = 0; i < 100; i += 1) {
+    const randomUserIndex = Math.floor(Math.random() * userList.length);
+    const { _id: userId } = userList[randomUserIndex];
+
+    let friendId = userId;
+
+    while (friendId === userId) {
+      const randomUserIndex = Math.floor(Math.random() * userList.length);
+      friendId = userList[randomUserIndex];
+    }
+
+    await User.updateOne({ _id: userId }, { $addToSet: { friends: friendId } });
+  }
+
   // create messages
   let createdMessages = [];
   for (let i = 0; i < 100; i += 1) {
     const messageText = faker.lorem.words(Math.round(Math.random() * 20) + 1);
 
-    const randomUserIndex = Math.floor(Math.random() * userList.length);
-    const { username, _id: userId } = userList[randomUserIndex];
+    const randomUserIndexFrom = Math.floor(Math.random() * userList.length);
+    const from = userList[randomUserIndexFrom].username;
+    const userId = userList[randomUserIndexFrom]._id;
 
-    const createdMessage = await Message.create({ messageText, username });
+    const randomUserIndexTo = Math.floor(Math.random() * userList.length);
+    const to = userList[randomUserIndexTo].username;
+
+    const createdMessage = await Message.create({ messageText, from, to });
 
     const updatedUser = await User.updateOne(
       { _id: userId },

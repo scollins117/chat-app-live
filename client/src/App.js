@@ -8,15 +8,18 @@ import {
   InMemoryCache,
   createHttpLink,
 } from "@apollo/client";
+import { setContext } from '@apollo/client/link/context';
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 
 import Header from "./components/Header";
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import NoMatch from "./pages/NoMatch";
 import Home from "./pages/Home";
+import NoMatch from "./pages/NoMatch";
+
 
 // const link = new WebSocketLink({
 //   uri: `ws://localhost:3000/`,
@@ -29,31 +32,41 @@ const httpLink = createHttpLink({
   uri: "/graphql",
 });
 
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 const client = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#1976d2",
-    },
-  },
-});
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//     primary: {
+//       main: "#1976d2",
+//     },
+//   },
+// });
 
 function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
         <Stack spacing={2} sx={{ flexGrow: 1 }}>
-          <ThemeProvider theme={darkTheme}>
             <div className="App">
               <Header />
               <div className="container">
                 <Switch>
                   <Route exact path="/" component={Home} />
+                  <Route exact path="/dashboard" component={Dashboard} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <Route component={NoMatch} />
@@ -61,7 +74,6 @@ function App() {
               </div>
               {/* <Footer  */}
             </div>
-          </ThemeProvider>
         </Stack>
       </Router>
     </ApolloProvider>
