@@ -29,7 +29,7 @@ import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/toast";
 import { Spinner } from "@chakra-ui/spinner";
 
-function Header() {
+function Header( {username, email}) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const loggedIn = Auth.loggedIn();
@@ -39,13 +39,6 @@ function Header() {
 
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-
-  const { loading, data } = useQuery(QUERY_ME_BASIC);
-
-  if (!loading) {
-    console.log(data.me.username)
-  }
-  
 
   // const searchUsers = () => {
   //   const { loading, data } = useQuery(QUERY_SEARCH);
@@ -121,9 +114,9 @@ function Header() {
               />
             </MenuButton>
             <MenuList>
-              {!loading && <ProfileModal username={data.me.username} email={data.me.email}>
+              <ProfileModal username={username} email={email}>
                 <MenuItem>My Profile</MenuItem>{" dasd"}
-              </ProfileModal>}
+              </ProfileModal>
               <MenuDivider />
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>

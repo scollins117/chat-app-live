@@ -12,11 +12,7 @@ import { setContext } from '@apollo/client/link/context';
 
 // import Stack from "@mui/material/Stack";
 
-import Header from "./components/Header";
 import Chat from "./pages/Chat";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import NoMatch from "./pages/NoMatch";
 

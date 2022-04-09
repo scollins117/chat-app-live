@@ -1,160 +1,125 @@
-// import React, { useState } from "react";
-// import { useMutation, useQuery } from "@apollo/client";
-// import { ADD_FRIEND } from "../../utils/mutations";
-// import { QUERY_USER, QUERY_ME } from "../../utils/queries";
-// import Auth from "../../utils/auth";
+import { Box, Stack, Text } from "@chakra-ui/layout";
+import { useToast } from "@chakra-ui/toast";
+import { useEffect, useState } from "react";
 
-// import Grid from "@mui/material/Grid";
-// import Divider from "@mui/material/Divider";
-// import TextField from "@mui/material/TextField";
-// import List from "@mui/material/List";
-// import ListItem from "@mui/material/ListItem";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
-// import Avatar from "@mui/material/Avatar";
-// import Fab from "@mui/material/Fab";
+import { useMutation, useQuery } from "@apollo/client";
+import { ADD_FRIEND } from "../../utils/mutations";
+import { QUERY_USER, QUERY_ME } from "../../utils/queries";
+import Auth from "../../utils/auth";
 
-// const FriendList = ({ friendCount, username, friends }) => {
-//   console.log("current user friends: ", friends);
+// import { getSender } from "../config/ChatLogics";
+// import ChatLoading from "./ChatLoading";
+// import GroupChatModal from "./miscellaneous/GroupChatModal";
+// import { ChatState } from "../Context/ChatProvider";
 
-//   const [searchedUser, setSearchedUser] = useState("");
-//   let inputedUser = "";
+const FriendList = ({data}) => {
+  const [loggedUser, setLoggedUser] = useState();
+  const [selectedUser, setSelectedUser] = useState();
+  
 
-//   const [addFriend] = useMutation(ADD_FRIEND);
-//   const { loading, data, refetch, error } = useQuery(QUERY_USER, {
-//     variables: { username: searchedUser },
-//   });
+  const friends = data.me.friends
+  console.log("My Friends: ", friends);
 
-//   const user = data?.me || data?.user || {};
 
-//   const handleClick = async () => {
-//     console.log("BUTTON CLICKED");
-//     setSearchedUser(inputedUser);
-//     console.log("Current Queried User: ", searchedUser);
-//     console.log("user data present", Object.keys(user).length);
+  var selectedChat = true;
 
-//     const handleAddFriend = async () => {
-//       try {
-//         console.log("user id to add:", user._id);
-//         await addFriend({
-//           variables: { id: user._id },
-//         });
-//       } catch (e) {
-//         console.error(e);
-//         console.log("COULD NOT ADD FRIEND");
-//       }
-//     };
+  // const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
-//     if (Object.keys(user).length > 0) {
-//       handleAddFriend();
-//     }
-//   };
+  const toast = useToast();
 
-//   const handleChange = (event) => {
-//     inputedUser = event.target.value;
-//     console.log(inputedUser);
-//   };
+  // const fetchChats = async () => {
+  //   // console.log(user._id);
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         Authorization: `Bearer ${user.token}`,
+  //       },
+  //     };
 
-//   // if (!friends || !friends.length) {
-//   //   return <ListItemText primary={`${username} has no friends`} />;
-//   // }
+  //     const { data } = await axios.get("/api/chat", config);
+  //     setChats(data);
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error Occured!",
+  //       description: "Failed to Load the chats",
+  //       status: "error",
+  //       duration: 5000,
+  //       isClosable: true,
+  //       position: "bottom-left",
+  //     });
+  //   }
+  // };
 
-//   return (
-//     <Grid item xs={3} sx={{ borderRight: "1px solid #e0e0e0" }}>
-//       <List>
-//         <ListItem button key="RemySharp">
-//           <ListItemIcon>
-//             <Avatar
-//               alt="Remy Sharp"
-//               src="https://material-ui.com/static/images/avatar/1.jpg"
-//             />
-//           </ListItemIcon>
-//           <ListItemText primary={`${username} friend list`}></ListItemText>
-//         </ListItem>
-//       </List>
-//       <Divider />
-//       <Grid container>
-//         <Grid item xs={10} style={{ padding: "10px" }}>
-//           <TextField
-//             id="outlined-basic-email"
-//             label="Add Friend"
-//             variant="outlined"
-//             fullWidth
-//             onChange={handleChange}
-//           />
-//         </Grid>
-//         <Grid item xs={1} align="right" mt={1} ml={1}>
-//           <Fab color="primary" aria-label="add" onClick={handleClick}>
-//             {/* <SendIcon /> */}
-//           </Fab>
-//         </Grid>
-//       </Grid>
-//       <Divider />
-//       <List>
-//         {friends &&
-//           friends.map((friend) => (
-//             <ListItem button key={friend._id}>
-//               <ListItemIcon>
-//                 <Avatar
-//                   alt="Remy Sharp"
-//                   src="https://material-ui.com/static/images/avatar/2.jpg"
-//                 />
-//               </ListItemIcon>
-//               <ListItemText primary={friend.username}>
-//                 {friend.username}
-//               </ListItemText>
-//               <ListItemText secondary="online" align="right"></ListItemText>
-//             </ListItem>
-//           ))}
-//       </List>
-//     </Grid>
-//   );
+  // useEffect(() => {
+  //   setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+  //   fetchChats();
+  //   // eslint-disable-next-line
+  // }, [fetchAgain]);
 
-//   // return (
-//   //   <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-//   //     <nav aria-label="main mailbox folders">
-//   //       <List>
-//   //         <h5>
-//   //           {username}'s {friendCount}{" "}
-//   //           {friendCount === 1 ? "friend" : "friends"}
-//   //         </h5>
-//   //         {friends ? (
-//   //           friends.map((friend) => (
-//   //             <ListItem disablePadding>
-//   //               <ListItemButton key={friend._id}>
-//   //                 <Link to={`/profile/${friend.username}`}>
-//   //                   {" "}
-//   //                   <ListItemText primary={friend.username} />{" "}
-//   //                 </Link>
-//   //               </ListItemButton>
-//   //             </ListItem>
-//   //           ))
-//   //         ) : (
-//   //           <ListItem disablePadding>
-//   //             <ListItemButton>
-//   //                 <ListItemText primary={`${username} has no friends`} />
-//   //             </ListItemButton>
-//   //           </ListItem>
-//   //         )}
-//   //       </List>
-//   //     </nav>
-//   //   </Box>
-//   // );
+  return (
+    <Box
+      d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+      flexDir="column"
+      alignItems="center"
+      p={3}
+      bg="white"
+      w={{ base: "100%", md: "31%" }}
+      borderRadius="lg"
+      borderWidth="1px"
+    >
+      <Box
+        pb={3}
+        px={3}
+        fontSize={{ base: "28px", md: "30px" }}
+        fontFamily="Work sans"
+        d="flex"
+        w="100%"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        My Friends
+      </Box>
+      <Box
+        d="flex"
+        flexDir="column"
+        p={3}
+        bg="#F8F8F8"
+        w="100%"
+        h="100%"
+        borderRadius="lg"
+        overflowY="hidden"
+      >
+        {friends && (
+          <Stack overflowY="scroll">
+            {friends.map((friend) => (
+              <Box
+                onClick={() => setSelectedUser(friend)}
+                cursor="pointer"
+                bg={selectedUser === friend ? "#38B2AC" : "#E8E8E8"}
+                color={selectedUser === friend ? "white" : "black"}
+                px={3}
+                py={2}
+                borderRadius="lg"
+                key={friend._id}
+              >
+                <Text>
+                 {friend.username}
+                </Text>
+                {/* {chat.latestMessage && (
+                  <Text fontSize="xs">
+                    <b>{chat.latestMessage.sender.name} : </b>
+                    {chat.latestMessage.content.length > 50
+                      ? chat.latestMessage.content.substring(0, 51) + "..."
+                      : chat.latestMessage.content}
+                  </Text>
+                )} */}
+              </Box>
+            ))}
+          </Stack> 
+        )}
+      </Box>
+    </Box>
+  );
+};
 
-//   // return (
-//   //   <div>
-//   //     <h5>
-//   //       {username}'s {friendCount} {friendCount === 1 ? 'friend' : 'friends'}
-//   //     </h5>
-//   // {friends.map(friend => (
-//   //  <ListItem disablePadding>
-//   //   <ListItemButton key={friend._id}>
-//   //     <Link to={`/profile/${friend.username}`}> <ListItemText primary={friend.username} /> </Link>
-//   //   </ListItemButton>
-//   //  </ListItem>
-//   // ))}
-//   //   </div>
-//   // );
-// };
-
-// export default FriendList;
+export default FriendList;
