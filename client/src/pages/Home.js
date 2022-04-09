@@ -9,7 +9,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useHistory } from "react-router";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 

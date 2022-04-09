@@ -45,7 +45,6 @@ function App() {
       <Router>
         {/* <Stack spacing={2} sx={{ flexGrow: 1 }}> */}
             <div className="App">
-              <Header />
               <div className="container">
                 <Switch>
                   <Route exact path="/" component={Home} />
