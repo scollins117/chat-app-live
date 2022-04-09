@@ -16,6 +16,14 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
 
+    // // search all users
+    // search: async (parent, keyword, context) => {
+    //   return User.find(keyword).find({ _id: { $ne: context.user._id } })
+    //     .select("-__v -password")
+    //     .populate("messages")
+    //     .populate("friends");
+    // },
+
     // get all users
     users: async () => {
       return User.find()
@@ -23,7 +31,8 @@ const resolvers = {
         .populate("messages")
         .populate("friends");
     },
-    // get all users
+    
+    // get one users
     user: async (parent, { username }) => {
       return User.findOne({ username })
         .select("-__v -password")

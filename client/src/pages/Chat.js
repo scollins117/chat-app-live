@@ -1,22 +1,22 @@
-import React from "react";
-import Auth from '../utils/auth';
-import { useQuery } from '@apollo/client';
-import { QUERY_ME } from '../utils/queries';
+// import React from "react";
+// import Auth from '../utils/auth';
+// import { useQuery } from '@apollo/client';
+// import { QUERY_ME } from '../utils/queries';
 
-import Chatbox from "../components/Chatbox";
-import FriendList from "../components/FriendList";
+// import Chatbox from "../components/Chatbox";
+// import FriendList from "../components/FriendList";
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
+// import Grid from "@mui/material/Grid";
+// import Typography from "@mui/material/Typography";
+// import Paper from "@mui/material/Paper";
 
 const Chat = () => {
-  const { data: userData } = useQuery(QUERY_ME);
-  const loggedIn = Auth.loggedIn();
+  // const { data: userData } = useQuery(QUERY_ME);
+  // const loggedIn = Auth.loggedIn();
 
   return (
     <div>
-      <Grid container>
+      {/* <Grid container>
         <Grid item xs={12}>
           <Typography variant="h5" className="header-message">
             Chat
@@ -30,9 +30,9 @@ const Chat = () => {
               friendCount={userData.me.friendCount}
               friends={userData.me.friends}
             />
-        ) : null}
-        <Chatbox></Chatbox>
-      </Grid>
+        ) : null} */}
+        {/* <Chatbox></Chatbox> */}
+      {/* </Grid> */}
     </div>
   );
 };

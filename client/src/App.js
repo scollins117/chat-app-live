@@ -10,8 +10,7 @@ import {
 } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
 
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Stack from "@mui/material/Stack";
+// import Stack from "@mui/material/Stack";
 
 import Header from "./components/Header";
 import Chat from "./pages/Chat";
@@ -20,14 +19,6 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import NoMatch from "./pages/NoMatch";
-
-
-// const link = new WebSocketLink({
-//   uri: `ws://localhost:3000/`,
-//   options: {
-//     reconnect: true,
-//   },
-// });
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -48,35 +39,27 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// const darkTheme = createTheme({
-//   palette: {
-//     mode: "dark",
-//     primary: {
-//       main: "#1976d2",
-//     },
-//   },
-// });
-
 function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Stack spacing={2} sx={{ flexGrow: 1 }}>
+        {/* <Stack spacing={2} sx={{ flexGrow: 1 }}> */}
             <div className="App">
               <Header />
               <div className="container">
                 <Switch>
                   <Route exact path="/" component={Home} />
-                  <Route exact path="/dashboard" component={Dashboard} />
+                  <Route exact path="/chats" component={Chat} />
+                  {/* <Route exact path="/dashboard" component={Dashboard} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
-                  <Route exact path="/chats" component={Chat} />
+                   */}
                   <Route component={NoMatch} />
                 </Switch>
               </div>
               {/* <Footer  */}
             </div>
-        </Stack>
+        {/* </Stack> */}
       </Router>
     </ApolloProvider>
   );

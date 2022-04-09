@@ -54,3 +54,13 @@ export const QUERY_MESSAGES = gql`
     }
   }
 `;
+
+// export const QUERY_SEARCH = gql`
+//   query user($username: String!) {
+//     user(username: $username) {
+//       _id
+//       username
+//       email
+//     }
+//   }
+// `;
