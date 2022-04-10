@@ -13,7 +13,7 @@ let selectedChat = true
       borderRadius="lg"
       borderWidth="1px"
     >
-      {/* <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} /> */}
+      {/* <Chat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} /> */}
     </Box>
   );
 };

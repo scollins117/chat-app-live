@@ -12,7 +12,21 @@ import { useEffect } from "react";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 
+import { useChatContext } from '../utils/GlobalState';
+import { TOGGLE_SHOW } from '../utils/actions';
+
 function Home() {
+
+  const [state, dispatch] = useChatContext();
+  
+  const {showOpen} = state
+
+  function toggleShow() {
+    if (showOpen === true)  {
+    dispatch({ type: TOGGLE_SHOW });
+  }
+  }
+
   return (
     <Container maxW="xl" centerContent>
       <Box
@@ -32,15 +46,15 @@ function Home() {
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
         <Tabs isFitted variant="soft-rounded">
           <TabList mb="1em">
-            <Tab>Login</Tab>
-            <Tab>Sign Up</Tab>
+            <Tab onClick={toggleShow}>Login</Tab>
+            <Tab onClick={toggleShow}>Sign Up</Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
+            <TabPanel >
               <Login />
             </TabPanel>
-            <TabPanel>
-              <Signup />
+            <TabPanel >
+              <Signup/>
             </TabPanel>
           </TabPanels>
         </Tabs>

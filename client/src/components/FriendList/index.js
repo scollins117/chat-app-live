@@ -2,6 +2,9 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import { useEffect, useState } from "react";
 
+import { useChatContext } from "../../utils/GlobalState";
+import { UPDATE_CURRENT_FRIEND } from "../../utils/actions";
+
 import { useMutation, useQuery } from "@apollo/client";
 import { ADD_FRIEND } from "../../utils/mutations";
 import { QUERY_USER, QUERY_ME } from "../../utils/queries";
@@ -9,16 +12,30 @@ import Auth from "../../utils/auth";
 
 // import { getSender } from "../config/ChatLogics";
 // import ChatLoading from "./ChatLoading";
-// import GroupChatModal from "./miscellaneous/GroupChatModal";
 // import { ChatState } from "../Context/ChatProvider";
 
-const FriendList = ({data}) => {
-  const [loggedUser, setLoggedUser] = useState();
-  const [selectedUser, setSelectedUser] = useState();
+const FriendList = ({ data }) => {
+  const friends = data.me.friends;
+  const [state, dispatch] = useChatContext();
+  const { currentFriend } = state;
 
-  const friends = data.me.friends
-  console.log("My Friends: ", friends);
+  // useEffect(() => {
+  //   // if categoryData exists or has changed from the response of useQuery, then run dispatch()
+  //   if (friends) {
+  //     // execute our dispatch function with our action object indicating the type of action and the data to set our state for categories to
+  //     dispatch({
+  //       type: UPDATE_CURRENT_FRIEND,
+  //       currentFriend: friends.currentFriend,
+  //     });
+  //   }
+  // }, [currentFriend, dispatch]);
 
+  const handleClick = (id) => {
+    dispatch({
+      type: UPDATE_CURRENT_FRIEND,
+      currentFriend: id,
+    });
+  };
 
   var selectedChat = true;
 
@@ -63,18 +80,18 @@ const FriendList = ({data}) => {
           <Stack overflowY="scroll">
             {friends.map((friend) => (
               <Box
-                onClick={() => setSelectedUser(friend)}
+                onClick={() => {
+                  handleClick(friend._id);
+                }}
                 cursor="pointer"
-                bg={selectedUser === friend ? "#38B2AC" : "#E8E8E8"}
-                color={selectedUser === friend ? "white" : "black"}
+                bg={currentFriend === friend._id ? "#38B2AC" : "#E8E8E8"}
+                color={currentFriend === friend._id ? "white" : "black"}
                 px={3}
                 py={2}
                 borderRadius="lg"
                 key={friend._id}
               >
-                <Text>
-                 {friend.username}
-                </Text>
+                <Text>{friend.username}</Text>
                 {/* {chat.latestMessage && (
                   <Text fontSize="xs">
                     <b>{chat.latestMessage.sender.name} : </b>
@@ -85,7 +102,7 @@ const FriendList = ({data}) => {
                 )} */}
               </Box>
             ))}
-          </Stack> 
+          </Stack>
         )}
       </Box>
     </Box>

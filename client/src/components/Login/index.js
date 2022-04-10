@@ -4,6 +4,9 @@ import { LOGIN_USER } from "../../utils/mutations";
 import Auth from "../../utils/auth";
 import { Link } from "react-router-dom";
 
+import { useChatContext } from '../../utils/GlobalState';
+import { TOGGLE_SHOW } from '../../utils/actions';
+
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
@@ -11,25 +14,26 @@ import { VStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/react";
 
 const Login = () => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
   const toast = useToast();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [loading, setLoading] = useState(false);
-  const [formState, setFormState] = useState({ email: "", password: "" });
   const [login, { error }] = useMutation(LOGIN_USER);
+  const [state, dispatch] = useChatContext();
+  
+  const {showOpen} = state
 
+  function toggleShow() {
+    dispatch({ type: TOGGLE_SHOW });
+  }
+
+  const [formState, setFormState] = useState({ email: "", password: "" });
   const handleChange = (event) => {
-    console.log(event.target);
+
     const { name, value } = event.target;
-    console.log("name:", name, "Value:", value);
-    console.log("formstate before:", formState);
+
     setFormState({
       ...formState,
       [name]: value,
     });
-    console.log("formstate after:", formState);
+
   };
 
   const handleFormSubmit = async (event) => {
@@ -66,7 +70,7 @@ const Login = () => {
         <FormLabel>Email Address</FormLabel>
         <Input
           name="email"
-          value={email}
+          // value={email}
           type="email"
           placeholder="Enter Your Email Address"
           onChange={handleChange}
@@ -77,14 +81,14 @@ const Login = () => {
         <InputGroup size="md">
           <Input
             name="password"
-            value={password}
+            // value={password}
             onChange={handleChange}
-            type={show ? "text" : "password"}
+            type={showOpen ? "text" : "password"}
             placeholder="Enter password"
           />
           <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
+            <Button h="1.75rem" size="sm" onClick={toggleShow}>
+              {showOpen ? "Hide" : "Show"}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -94,20 +98,9 @@ const Login = () => {
         width="100%"
         style={{ marginTop: 15 }}
         onClick={handleFormSubmit}
-        isLoading={loading}
+        // isLoading={loading}
       >
         Login
-      </Button>
-      <Button
-        variant="solid"
-        colorScheme="red"
-        width="100%"
-        onClick={() => {
-          setEmail("test@test.com");
-          setPassword("tester");
-        }}
-      >
-        Get Guest User Credentials
       </Button>
     </VStack>
   );
