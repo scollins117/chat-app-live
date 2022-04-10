@@ -29,7 +29,7 @@ import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/toast";
 import { Spinner } from "@chakra-ui/spinner";
 
-function Header( {username, email}) {
+function Header({ username, email }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const loggedIn = Auth.loggedIn();
@@ -37,48 +37,46 @@ function Header( {username, email}) {
     Auth.logout();
   };
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState();
+  const [searchItem, setSearchItem] = useState("Matthew");
   const [searchResult, setSearchResult] = useState([]);
 
-  // const searchUsers = () => {
-  //   const { loading, data } = useQuery(QUERY_SEARCH);
-  //   return  { data }
-  // }
+  console.log("before query: ", searchItem);
+  const { loading, data } = useQuery(QUERY_SEARCH, {
+    variables: { username: searchItem },
+  });
+
+  if (!loading) {
+    console.log("data: ", data);
+  }
 
   const logoutHandler = () => {
     logout();
   };
 
-  const handleSearch = async () => {
-    console.log("create search code")
-    // if (!search) {
-    //   toast({
-    //     title: "Please Enter something in search",
-    //     status: "warning",
-    //     duration: 5000,
-    //     isClosable: true,
-    //     position: "top-left",
-    //   });
-    //   return;
-    // }
+  const handleChange = (event) => {
+    event.preventDefault();
+    const { value } = event.target;
+    console.log("Value:", value);
+    console.log("search before:", search);
+    setSearch(value);
+  };
 
-    // try {
-    //   console.log("keyword", keyword);
-    //   await searchUsers({
-    //     variables: keyword,
-    //   });
-    //   setSearchResult(data);
-    // } catch (e) {
-    //   console.error(e);
-    //   toast({
-    //     title: "Error Occured!",
-    //     description: "Failed to Load the Search Results",
-    //     status: "error",
-    //     duration: 5000,
-    //     isClosable: true,
-    //     position: "bottom-left",
-    //   });
-    // }
+  const handleSearch = async () => {
+    console.log(search);
+    if (!search) {
+      toast({
+        title: "Please Enter something in search",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      });
+      return;
+    } else {
+      setSearchItem(search);
+      console.log("Searched item: ", searchItem);
+    }
   };
 
   return (
@@ -106,16 +104,12 @@ function Header( {username, email}) {
         <div>
           <Menu>
             <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
-              <Avatar
-                size="sm"
-                cursor="pointer"
-                name=""
-                src=""
-              />
+              <Avatar size="sm" cursor="pointer" name="" src="" />
             </MenuButton>
             <MenuList>
               <ProfileModal username={username} email={email}>
-                <MenuItem>My Profile</MenuItem>{" dasd"}
+                <MenuItem>My Profile</MenuItem>
+                {" dasd"}
               </ProfileModal>
               <MenuDivider />
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>
@@ -123,7 +117,6 @@ function Header( {username, email}) {
           </Menu>
         </div>
       </Box>
-
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
@@ -133,23 +126,48 @@ function Header( {username, email}) {
               <Input
                 placeholder="Search by name or email"
                 mr={2}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                name="search"
+                onChange={handleChange}
               />
               <Button onClick={handleSearch}>Go</Button>
             </Box>
-            {/* {loading ? (
-              <ChatLoading />
-            ) : (
-              searchResult?.map((user) => (
-                <UserListItem
-                  key={user._id}
-                  user={user}
-                  handleFunction={() => accessChat(user._id)}
+            {!loading && data && searchResult?.map((user) => (
+              <Box
+                key={user._id}
+                // onClick={() => accessChat(user._id)}
+                cursor="pointer"
+                bg="#E8E8E8"
+                _hover={{
+                  background: "#38B2AC",
+                  color: "white",
+                }}
+                w="100%"
+                d="flex"
+                alignItems="center"
+                color="black"
+                px={3}
+                py={2}
+                mb={2}
+                borderRadius="lg"
+              >
+                <Avatar
+                  mr={2}
+                  size="sm"
+                  cursor="pointer"
+                  name={user.name}
+                  src={user.pic}
                 />
-              ))
-            )}
-            {loadingChat && <Spinner ml="auto" d="flex" />} */}
+                <Box>
+                  <Text>{user.name}</Text>
+                  <Text fontSize="xs">
+                    <b>Email : </b>
+                    {user.email}
+                  </Text>
+                </Box>
+              </Box>
+            ))}
+
+            {/* loadingChat && <Spinner ml="auto" d="flex" />} */}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

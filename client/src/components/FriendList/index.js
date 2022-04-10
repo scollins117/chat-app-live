@@ -15,7 +15,6 @@ import Auth from "../../utils/auth";
 const FriendList = ({data}) => {
   const [loggedUser, setLoggedUser] = useState();
   const [selectedUser, setSelectedUser] = useState();
-  
 
   const friends = data.me.friends
   console.log("My Friends: ", friends);
@@ -26,35 +25,6 @@ const FriendList = ({data}) => {
   // const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
   const toast = useToast();
-
-  // const fetchChats = async () => {
-  //   // console.log(user._id);
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         Authorization: `Bearer ${user.token}`,
-  //       },
-  //     };
-
-  //     const { data } = await axios.get("/api/chat", config);
-  //     setChats(data);
-  //   } catch (error) {
-  //     toast({
-  //       title: "Error Occured!",
-  //       description: "Failed to Load the chats",
-  //       status: "error",
-  //       duration: 5000,
-  //       isClosable: true,
-  //       position: "bottom-left",
-  //     });
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
-  //   fetchChats();
-  //   // eslint-disable-next-line
-  // }, [fetchAgain]);
 
   return (
     <Box

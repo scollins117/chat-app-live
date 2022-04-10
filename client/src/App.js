@@ -8,24 +8,25 @@ import {
   InMemoryCache,
   createHttpLink,
 } from "@apollo/client";
-import { setContext } from '@apollo/client/link/context';
+import { setContext } from "@apollo/client/link/context";
 
-// import Stack from "@mui/material/Stack";
+import { Stack } from "@chakra-ui/layout";
 
 import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import NoMatch from "./pages/NoMatch";
+import { ChatProvider } from "./utils/GlobalState";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
+  const token = localStorage.getItem("id_token");
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -39,7 +40,8 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        {/* <Stack spacing={2} sx={{ flexGrow: 1 }}> */}
+        <ChatProvider>
+          <Stack spacing={2} sx={{ flexGrow: 1 }}>
             <div className="App">
               <div className="container">
                 <Switch>
@@ -54,7 +56,8 @@ function App() {
               </div>
               {/* <Footer  */}
             </div>
-        {/* </Stack> */}
+          </Stack>
+        </ChatProvider>
       </Router>
     </ApolloProvider>
   );

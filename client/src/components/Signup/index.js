@@ -4,6 +4,9 @@ import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../../utils/mutations";
 import Auth from "../../utils/auth";
 
+import { useChatContext } from '../../utils/GlobalState';
+import { TOGGLE_SHOW } from '../../utils/actions';
+
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
@@ -11,10 +14,16 @@ import { VStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 
 const Signup = () => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
   const toast = useToast();
   const [confirmPassword, setConfirmPassword] = useState();
+
+  const [state, dispatch] = useChatContext();
+  
+  const {showOpen} = state
+
+  function toggleShow() {
+    dispatch({ type: TOGGLE_SHOW });
+  }
 
   const [formState, setFormState] = useState({
     username: "",
@@ -99,13 +108,13 @@ const Signup = () => {
         <InputGroup size="md">
           <Input
             name="password"
-            type={show ? "text" : "password"}
+            type={showOpen ? "text" : "password"}
             placeholder="Enter Password"
             onChange={handleChange}
           />
           <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
+            <Button h="1.75rem" size="sm" onClick={toggleShow}>
+              {showOpen ? "Hide" : "Show"}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -114,13 +123,13 @@ const Signup = () => {
         <FormLabel>Confirm Password</FormLabel>
         <InputGroup size="md">
           <Input
-            type={show ? "text" : "password"}
+            type={showOpen ? "text" : "password"}
             placeholder="Confirm password"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
+            <Button h="1.75rem" size="sm" onClick={toggleShow}>
+              {showOpen ? "Hide" : "Show"}
             </Button>
           </InputRightElement>
         </InputGroup>

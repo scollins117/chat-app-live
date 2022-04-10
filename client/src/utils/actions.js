@@ -1,0 +1,4 @@
+export const TOGGLE_CHAT = "TOGGLE_CHAT";
+export const TOGGLE_SHOW = "TOGGLE_SHOW";
+export const CURRENT_USER = "CURRENT_USER";
+export const UPDATE_CURRENT_SEARCH = "UPDATE_CURRENT_SEARCH";

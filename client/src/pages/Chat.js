@@ -22,9 +22,9 @@ const Chat = () => {
       {loggedIn && !loading && <Header username={data.me.username} email={data.me.email}/>}
       <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
          {loggedIn && !loading && <FriendList data={data}/>}
-        {/*{loggedIn && (
+        {loggedIn && (
           <Chatbox/>
-        )} */}
+        )}
       </Box>
     </div>
   );

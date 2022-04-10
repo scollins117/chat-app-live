@@ -26,6 +26,7 @@ const typeDefs = gql`
   type Query {
     me: User
     users: [User]
+    search: [User]
     user(username: String!): User
     messages: [Message]
     message(_id: ID!): Message

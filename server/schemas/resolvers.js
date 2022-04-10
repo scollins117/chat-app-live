@@ -16,13 +16,23 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
 
-    // // search all users
-    // search: async (parent, keyword, context) => {
-    //   return User.find(keyword).find({ _id: { $ne: context.user._id } })
-    //     .select("-__v -password")
-    //     .populate("messages")
-    //     .populate("friends");
-    // },
+    // search all users
+    search: async (parent, { username }, context) => {
+      console.log(username)
+      const keyword = username
+    ? {
+        $or: [
+          { name: { $regex: username, $options: "i" } },
+          { email: { $regex: username, $options: "i" } },
+        ],
+      }
+    : {};
+      console.log(keyword)
+      return User.find(keyword)  //.find({ _id: { $ne: context.user._id } })
+        .select("-__v -password")
+        .populate("messages")
+        .populate("friends");
+    },
 
     // get all users
     users: async () => {
