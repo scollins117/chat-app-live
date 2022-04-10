@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Auth from "../utils/auth";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "../utils/queries";
@@ -41,7 +41,7 @@ const Chat = () => {
       )}
       <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
         {loggedIn && !loading && <FriendList data={data} />}
-        {loggedIn && <Chatbox />}
+        {loggedIn && <Chatbox data={data} />}
       </Box>
     </div>
   );

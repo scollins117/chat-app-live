@@ -1,18 +1,7 @@
 import { Box, Stack, Text } from "@chakra-ui/layout";
-import { useToast } from "@chakra-ui/toast";
-import { useEffect, useState } from "react";
 
 import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND, UPDATE_FRIENDS } from "../../utils/actions";
-
-import { useMutation, useQuery } from "@apollo/client";
-import { ADD_FRIEND } from "../../utils/mutations";
-import { QUERY_USER, QUERY_ME } from "../../utils/queries";
-import Auth from "../../utils/auth";
-
-// import { getSender } from "../config/ChatLogics";
-// import ChatLoading from "./ChatLoading";
-// import { ChatState } from "../Context/ChatProvider";
 
 const FriendList = () => {
   const [state, dispatch] = useChatContext();
@@ -28,8 +17,6 @@ const FriendList = () => {
     console.log("current friend: ", currentFriend);
 
   };
-
-  // const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
   return (
     <Box

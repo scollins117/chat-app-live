@@ -2,10 +2,10 @@ import { useReducer } from "react";
 
 import {
   TOGGLE_CHAT,
+  TOGGLE_SHOW,
   UPDATE_CURRENT_SEARCH,
   UPDATE_CURRENT_FRIEND,
   UPDATE_FRIENDS,
-  TOGGLE_SHOW,
   ADD_FRIEND,
 } from "./actions";
 

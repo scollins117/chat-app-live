@@ -45,6 +45,8 @@ export const QUERY_USER = gql`
       email
       messages {
         _id
+        from
+        to
         messageText
         createdAt
       }

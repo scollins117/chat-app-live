@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import ProfileModal from "../Profile";
 import Auth from "../../utils/auth";
-import { QUERY_ME_BASIC, QUERY_SEARCH } from "../../utils/queries";
+import { QUERY_SEARCH } from "../../utils/queries";
 import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND, ADD_FRIEND } from "../../utils/actions";
 
@@ -26,7 +25,7 @@ import {
   DrawerOverlay,
 } from "@chakra-ui/modal";
 import { Tooltip } from "@chakra-ui/tooltip";
-import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/toast";
 import { Spinner } from "@chakra-ui/spinner";
@@ -52,6 +51,13 @@ function Header({ username, email }) {
   const logoutHandler = () => {
     logout();
   };
+
+  if (!loading) {
+    console.log("QUERY_SEARCH data: ", data);
+    if (!loading && data.user) {
+      console.log("QUERY_SEARCH data2: ", data);
+    }
+  }
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -87,7 +93,7 @@ function Header({ username, email }) {
       friend: user,
     });
 
-    // add friend
+    // add friend to database
   };
 
   return (
@@ -142,7 +148,7 @@ function Header({ username, email }) {
               />
               <Button onClick={handleSearch}>Go</Button>
             </Box>
-            {!loading && data && (
+            {!loading && data.user && (
               <Box
                 key={data.user._id}
                 onClick={() => handleClick(data.user)}
