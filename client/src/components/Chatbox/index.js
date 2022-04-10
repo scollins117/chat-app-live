@@ -1,10 +1,13 @@
 import { Box } from "@chakra-ui/layout";
+import { useChatContext } from "../../utils/GlobalState";
 
 const Chatbox = () => {
-let selectedChat = true
+  const [state, dispatch] = useChatContext();
+  const { currentFriend } = state;
+
   return (
     <Box
-      display={{ base: selectedChat ? "flex" : "none", md: "flex" }}
+      display={{ base: currentFriend ? "flex" : "none", md: "flex" }}
       alignItems="center"
       flexDir="column"
       p={3}
@@ -19,8 +22,6 @@ let selectedChat = true
 };
 
 export default Chatbox;
-
-
 
 // import React from "react";
 

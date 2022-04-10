@@ -3,7 +3,7 @@ import { useToast } from "@chakra-ui/toast";
 import { useEffect, useState } from "react";
 
 import { useChatContext } from "../../utils/GlobalState";
-import { UPDATE_CURRENT_FRIEND } from "../../utils/actions";
+import { UPDATE_CURRENT_FRIEND, UPDATE_FRIENDS } from "../../utils/actions";
 
 import { useMutation, useQuery } from "@apollo/client";
 import { ADD_FRIEND } from "../../utils/mutations";
@@ -14,38 +14,26 @@ import Auth from "../../utils/auth";
 // import ChatLoading from "./ChatLoading";
 // import { ChatState } from "../Context/ChatProvider";
 
-const FriendList = ({ data }) => {
-  const friends = data.me.friends;
+const FriendList = () => {
   const [state, dispatch] = useChatContext();
   const { currentFriend } = state;
+  const friends = state.friends;
 
-  // useEffect(() => {
-  //   // if categoryData exists or has changed from the response of useQuery, then run dispatch()
-  //   if (friends) {
-  //     // execute our dispatch function with our action object indicating the type of action and the data to set our state for categories to
-  //     dispatch({
-  //       type: UPDATE_CURRENT_FRIEND,
-  //       currentFriend: friends.currentFriend,
-  //     });
-  //   }
-  // }, [currentFriend, dispatch]);
-
-  const handleClick = (id) => {
+  const handleClick = (user) => {
+    console.log("Friend clicked!", user);
     dispatch({
       type: UPDATE_CURRENT_FRIEND,
-      currentFriend: id,
+      currentFriend: user,
     });
-  };
+    console.log("current friend: ", currentFriend);
 
-  var selectedChat = true;
+  };
 
   // const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
-  const toast = useToast();
-
   return (
     <Box
-      d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+      d={{ base: currentFriend ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
       p={3}
@@ -81,11 +69,11 @@ const FriendList = ({ data }) => {
             {friends.map((friend) => (
               <Box
                 onClick={() => {
-                  handleClick(friend._id);
+                  handleClick(friend);
                 }}
                 cursor="pointer"
-                bg={currentFriend === friend._id ? "#38B2AC" : "#E8E8E8"}
-                color={currentFriend === friend._id ? "white" : "black"}
+                bg={currentFriend._id === friend._id ? "#619c5d" : "#E8E8E8"}
+                color={currentFriend._id === friend._id ? "white" : "black"}
                 px={3}
                 py={2}
                 borderRadius="lg"

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
+import ProfileModal from "../Profile";
 import Auth from "../../utils/auth";
 import { QUERY_ME_BASIC, QUERY_SEARCH } from "../../utils/queries";
-import ProfileModal from "../Profile";
+import { useChatContext } from "../../utils/GlobalState";
+import { UPDATE_CURRENT_FRIEND, ADD_FRIEND } from "../../utils/actions";
 
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
@@ -32,6 +34,8 @@ import { Spinner } from "@chakra-ui/spinner";
 function Header({ username, email }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [state, dispatch] = useChatContext();
+
   const loggedIn = Auth.loggedIn();
   const logout = (event) => {
     Auth.logout();
@@ -41,14 +45,9 @@ function Header({ username, email }) {
   const [searchItem, setSearchItem] = useState("Matthew");
   const [searchResult, setSearchResult] = useState([]);
 
-  console.log("before query: ", searchItem);
   const { loading, data } = useQuery(QUERY_SEARCH, {
     variables: { username: searchItem },
   });
-
-  if (!loading) {
-    console.log("data: ", data);
-  }
 
   const logoutHandler = () => {
     logout();
@@ -57,13 +56,10 @@ function Header({ username, email }) {
   const handleChange = (event) => {
     event.preventDefault();
     const { value } = event.target;
-    console.log("Value:", value);
-    console.log("search before:", search);
     setSearch(value);
   };
 
   const handleSearch = async () => {
-    console.log(search);
     if (!search) {
       toast({
         title: "Please Enter something in search",
@@ -75,8 +71,23 @@ function Header({ username, email }) {
       return;
     } else {
       setSearchItem(search);
-      console.log("Searched item: ", searchItem);
     }
+  };
+
+  const handleClick = (user) => {
+    console.log("Friend clicked!", user);
+    dispatch({
+      type: UPDATE_CURRENT_FRIEND,
+      currentFriend: user,
+    });
+    console.log("current friend: ", state.currentFriend);
+    console.log("friends: ", state.friends);
+    dispatch({
+      type: ADD_FRIEND,
+      friend: user,
+    });
+
+    // add friend
   };
 
   return (
@@ -124,17 +135,17 @@ function Header({ username, email }) {
           <DrawerBody>
             <Box d="flex" pb={2}>
               <Input
-                placeholder="Search by name or email"
+                placeholder="Search by username"
                 mr={2}
                 name="search"
                 onChange={handleChange}
               />
               <Button onClick={handleSearch}>Go</Button>
             </Box>
-            {!loading && data && searchResult?.map((user) => (
+            {!loading && data && (
               <Box
-                key={user._id}
-                // onClick={() => accessChat(user._id)}
+                key={data.user._id}
+                onClick={() => handleClick(data.user)}
                 cursor="pointer"
                 bg="#E8E8E8"
                 _hover={{
@@ -154,18 +165,18 @@ function Header({ username, email }) {
                   mr={2}
                   size="sm"
                   cursor="pointer"
-                  name={user.name}
-                  src={user.pic}
+                  name={data.user.username}
+                  src=""
                 />
                 <Box>
-                  <Text>{user.name}</Text>
+                  <Text>{data.user.username}</Text>
                   <Text fontSize="xs">
                     <b>Email : </b>
-                    {user.email}
+                    {data.user.email}
                   </Text>
                 </Box>
               </Box>
-            ))}
+            )}
 
             {/* loadingChat && <Spinner ml="auto" d="flex" />} */}
           </DrawerBody>

@@ -4,7 +4,9 @@ import {
   TOGGLE_CHAT,
   UPDATE_CURRENT_SEARCH,
   UPDATE_CURRENT_FRIEND,
+  UPDATE_FRIENDS,
   TOGGLE_SHOW,
+  ADD_FRIEND,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -32,6 +34,18 @@ export const reducer = (state, action) => {
       return {
         ...state,
         currentFriend: action.currentFriend,
+      };
+
+    case UPDATE_FRIENDS:
+      return {
+        ...state,
+        friends: [...action.friends],
+      };
+
+    case ADD_FRIEND:
+      return {
+        ...state,
+        friends: [...state.friends, action.friend],
       };
 
     default:

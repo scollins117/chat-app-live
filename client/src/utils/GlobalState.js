@@ -4,18 +4,17 @@ import { useChatReducer } from './reducers';
 const ChatContext = createContext();
 const { Provider } = ChatContext;
 
-console.log("ChatContext: ", ChatContext)
-
 const ChatProvider = ({ value = [], ...props }) => {
   const [state, dispatch] = useChatReducer({
     showOpen: false,
     chatOpen: false,
     chatOn: [],
+    friends: [],
     currentFriend: '',
   });
   // use this to confirm it works!
-  console.log("state: ", state);
-  console.log("dispatch: ", dispatch);
+  console.log("Global State: ", state);
+  console.log("Dispatch: ", dispatch);
   return <Provider value={[state, dispatch]} {...props} />;
 };
 

@@ -15,6 +15,13 @@ export const QUERY_ME = gql`
       friends {
         _id
         username
+        email
+        messages {
+          _id
+          messageText
+          createdAt
+          from
+        }
       }
     }
   }

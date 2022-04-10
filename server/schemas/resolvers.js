@@ -18,20 +18,20 @@ const resolvers = {
 
     // search all users
     search: async (parent, { username }, context) => {
-      console.log(username)
-      const keyword = username
-    ? {
-        $or: [
-          { name: { $regex: username, $options: "i" } },
-          { email: { $regex: username, $options: "i" } },
-        ],
-      }
-    : {};
-      console.log(keyword)
-      return User.find(keyword)  //.find({ _id: { $ne: context.user._id } })
-        .select("-__v -password")
-        .populate("messages")
-        .populate("friends");
+        console.log(username);
+        const keyword = username
+          ? {
+              $or: [
+                { name: { $regex: username, $options: "i" } },
+                { email: { $regex: username, $options: "i" } },
+              ],
+            }
+          : {};
+        console.log(keyword);
+        return User.find(keyword) //.find({ _id: { $ne: context.user._id } })
+          .select("-__v -password")
+          .populate("messages")
+          .populate("friends");
     },
 
     // get all users
@@ -41,7 +41,7 @@ const resolvers = {
         .populate("messages")
         .populate("friends");
     },
-    
+
     // get one users
     user: async (parent, { username }) => {
       return User.findOne({ username })
