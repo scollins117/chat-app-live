@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import ProfileModal from "../Profile";
 import Auth from "../../utils/auth";
 import { QUERY_SEARCH } from "../../utils/queries";
 import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND, ADD_FRIEND } from "../../utils/actions";
+import { ADD_FRIEND_DB } from "../../utils/mutations";
 
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
@@ -34,6 +35,7 @@ function Header({ username, email }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [state, dispatch] = useChatContext();
+  const [addFriend] = useMutation(ADD_FRIEND_DB);
 
   const loggedIn = Auth.loggedIn();
   const logout = (event) => {
@@ -41,7 +43,7 @@ function Header({ username, email }) {
   };
 
   const [search, setSearch] = useState();
-  const [searchItem, setSearchItem] = useState("Matthew");
+  const [searchItem, setSearchItem] = useState("testuser");
   const [searchResult, setSearchResult] = useState([]);
 
   const { loading, data } = useQuery(QUERY_SEARCH, {
@@ -62,6 +64,10 @@ function Header({ username, email }) {
   const handleChange = (event) => {
     event.preventDefault();
     const { value } = event.target;
+    dispatch({
+      type: UPDATE_CURRENT_FRIEND,
+      currentFriend: value,
+    });
     setSearch(value);
   };
 
@@ -82,18 +88,32 @@ function Header({ username, email }) {
 
   const handleClick = (user) => {
     console.log("Friend clicked!", user);
-    dispatch({
-      type: UPDATE_CURRENT_FRIEND,
-      currentFriend: user,
-    });
     console.log("current friend: ", state.currentFriend);
     console.log("friends: ", state.friends);
     dispatch({
       type: ADD_FRIEND,
       friend: user,
     });
-
     // add friend to database
+    const addToDb = async () => {
+      console.log("user id to add:", user._id);
+      try {
+        await addFriend({
+          variables: { id: user._id },
+        });
+      } catch (e) {
+        console.error(e);
+        toast({
+          title: "Error Occured!",
+          description: "Failed to Add Friend",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom-left",
+        });
+      }
+    };
+    addToDb();
   };
 
   return (

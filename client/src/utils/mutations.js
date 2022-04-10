@@ -41,7 +41,7 @@ mutation addMessage($messageText: String!) {
 }
 `;
 
-export const ADD_FRIEND = gql`
+export const ADD_FRIEND_DB = gql`
   mutation addFriend($id: ID!) {
     addFriend(friendId: $id) {
       _id

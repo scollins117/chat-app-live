@@ -52,8 +52,7 @@ const resolvers = {
 
     // get message with param option username
     messages: async (parent, { username }) => {
-      const params = username ? { username } : {};
-      return Message.find(params).sort({ createdAt: -1 });
+      return Message.find(username).sort({ createdAt: -1 });
     },
 
     // get a single message
@@ -85,7 +84,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    sendMessage: async (parent, args, context) => {
+    addMessage: async (parent, args, context) => {
       if (context.user) {
         const message = await Message.create({
           ...args,

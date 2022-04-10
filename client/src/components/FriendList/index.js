@@ -1,7 +1,7 @@
 import { Box, Stack, Text } from "@chakra-ui/layout";
 
 import { useChatContext } from "../../utils/GlobalState";
-import { UPDATE_CURRENT_FRIEND, UPDATE_FRIENDS } from "../../utils/actions";
+import { UPDATE_CURRENT_FRIEND } from "../../utils/actions";
 
 const FriendList = () => {
   const [state, dispatch] = useChatContext();

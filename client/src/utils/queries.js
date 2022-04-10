@@ -68,9 +68,10 @@ export const QUERY_MESSAGES = gql`
   query messages($username: String) {
     messages(username: $username) {
       _id
+      from
+      to
       messageText
       createdAt
-      username
     }
   }
 `;

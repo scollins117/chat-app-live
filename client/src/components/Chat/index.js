@@ -3,14 +3,35 @@ import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { QUERY_USER } from "../../utils/queries";
 import { useEffect, useState } from "react";
 
+import { useQuery } from "@apollo/client";
 import ProfileModal from "../Profile";
 import { useChatContext } from "../../utils/GlobalState";
+import { UPDATE_CURRENT_FRIEND } from "../../utils/actions";
 
-const Chat = (data) => {
+const Chat = () => {
   const [state, dispatch] = useChatContext();
   const { currentFriend } = state;
+
+  const { loading, data } = useQuery(QUERY_USER, {
+    variables: { username: currentFriend.username },
+  });
+
+  if (!loading && data != null) {
+    
+    const {user} = data
+    console.log("CURRENT FRIEND USER DATA: ", user.messages);
+  }
+
+  const handleClick = () => {
+    dispatch({
+      type: UPDATE_CURRENT_FRIEND,
+      currentFriend: "",
+    });
+    console.log("current friend: ", currentFriend);
+  };
 
   return (
     <>
@@ -29,11 +50,14 @@ const Chat = (data) => {
             <IconButton
               d={{ base: "flex", md: "none" }}
               icon={<ArrowBackIcon />}
-              // onClick={() => setcurrentFriend("")}
+              onClick={handleClick}
             />
             <>
               {currentFriend.username}
-              <ProfileModal  username={currentFriend.username} email={currentFriend.email}/>
+              <ProfileModal
+                username={currentFriend.username}
+                email={currentFriend.email}
+              />
             </>
           </Text>
           <Box
