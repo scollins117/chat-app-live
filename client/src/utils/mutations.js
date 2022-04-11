@@ -52,8 +52,8 @@ export const GET_MESSAGES =gql`
 `;
 
 export const POST_MESSAGE = gql`
-  mutation($user: String!, $content: String!) {
-    postMessage(user: $user, content: $content)
+  mutation($user: String!, $messageText: String!) {
+    postMessage(user: $user, messageText: $messageText)
   }
 `;
 
