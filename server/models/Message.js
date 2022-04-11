@@ -8,18 +8,18 @@ const messageSchema = new Schema(
       minlength: 1,
       maxlength: 280,
     },
+    chat: {
+      type: Schema.Types.ObjectId,
+      ref: "Chat",
+    },
+    sender: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     createdAt: {
       type: Date,
       default: Date.now,
       get: (timestamp) => dateFormat(timestamp),
-    },
-    from: {
-      type: String,
-      required: true,
-    },
-    to: {
-      type: String,
-      required: true,
     },
   },
   {

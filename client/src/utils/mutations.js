@@ -1,44 +1,36 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const ADD_USER = gql`
-mutation addUser(
-    $username: String!
-    $email: String!
-    $password: String!
-) {
-    addUser(
-    username: $username
-    email: $email
-    password: $password
-    ) {
-        token
-    user {
-            _id
-        }
+  mutation addUser($username: String!, $email: String!, $password: String!) {
+    addUser(username: $username, email: $email, password: $password) {
+      token
+      user {
+        _id
+      }
     }
-}
+  }
 `;
 
 export const LOGIN_USER = gql`
-mutation login($email: String!, $password: String!) {
+  mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-    token
-    user {
-    _id
-        }
+      token
+      user {
+        _id
+      }
     }
-}
+  }
 `;
 
 export const ADD_MESSAGE = gql`
-mutation addMessage($messageText: String!) {
+  mutation addMessage($messageText: String!) {
     addMessage(messageText: $messageText) {
-    _id
-    messageText
-    createdAt
-    username
+      _id
+      messageText
+      createdAt
+      username
     }
-}
+  }
 `;
 
 export const ADD_FRIEND_DB = gql`
@@ -64,6 +56,18 @@ export const REMOVE_FRIEND = gql`
         _id
         username
       }
+    }
+  }
+`;
+
+export const CREATE_CHAT = gql`
+  mutation addChat($chatName: String!) {
+    addChat(chatName: $chatName) {
+      _id
+      chatName
+      users
+      chatMessages
+      createdAt
     }
   }
 `;

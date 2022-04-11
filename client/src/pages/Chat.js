@@ -21,7 +21,7 @@ const Chat = () => {
   const { loading, data } = useQuery(QUERY_ME);
   if (!loading) {
     console.log("my friends list from global state: ", friends);
-    console.log("QUERY_ME data: ", data.me.friends)
+    console.log("QUERY_ME data: ", data)
   }
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Chat = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      {loggedIn && !loading && (
+      {loggedIn && !loading && data && (
         <Header username={data.me.username} email={data.me.email} />
       )}
       <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
