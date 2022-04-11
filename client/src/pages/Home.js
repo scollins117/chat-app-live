@@ -27,7 +27,8 @@ function Home() {
   }
 
   return (
-    <Container maxW="xl" centerContent>
+    
+    <Container maxW="xl" centerContent height="100vh">
       <Box
         d="flex"
         justifyContent="center"
@@ -38,8 +39,8 @@ function Home() {
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text fontSize="4xl" fontFamily="Work sans">
-          Chitty Chat
+        <Text fontSize="4xl" font-family="Varela Round">
+        Juhst Chat
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">

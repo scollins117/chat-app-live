@@ -24,7 +24,7 @@ const ProfileModal = ( {username, email} ) => {
         <ModalContent h="410px">
           <ModalHeader
             fontSize="40px"
-            fontFamily="Work sans"
+            fontFamily="Varela Round"
             d="flex"
             justifyContent="center"
           >
@@ -45,7 +45,7 @@ const ProfileModal = ( {username, email} ) => {
             />
             <Text
               fontSize={{ base: "28px", md: "30px" }}
-              fontFamily="Work sans"
+              fontFamily="Varela Round"
             >
               Email: {email}
             </Text>

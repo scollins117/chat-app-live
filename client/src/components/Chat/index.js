@@ -84,7 +84,7 @@ const Chat = () => {
             pb={3}
             px={2}
             w="100%"
-            fontFamily="Work sans"
+            fontFamily="Varela Round"
             d="flex"
             justifyContent={{ base: "space-between" }}
             alignItems="center"
@@ -146,7 +146,7 @@ const Chat = () => {
         </>
       ) : (
         <Box d="flex" alignItems="center" justifyContent="center" h="100%">
-          <Text fontSize="3xl" pb={3} fontFamily="Work sans">
+          <Text fontSize="3xl" pb={3} fontFamily="Varela Round">
             Click on a user to start chatting
           </Text>
         </Box>

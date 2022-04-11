@@ -132,8 +132,8 @@ function Header({ username, email }) {
             </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work sans">
-          Chitty Chat
+        <Text fontSize="2xl" fontFamily="Varela Round">
+          Juhst Chat
         </Text>
         <div>
           <Menu>
@@ -141,9 +141,9 @@ function Header({ username, email }) {
               <Avatar size="sm" cursor="pointer" name="" src="" />
             </MenuButton>
             <MenuList>
-              <ProfileModal username={username} email={email}>
-                <MenuItem>My Profile</MenuItem>
-                {" dasd"}
+              <ProfileModal username={username} email={email}>ddddddd
+                <MenuItem>My Profile</MenuItem>ddddddd
+                {" "}dddd
               </ProfileModal>
               <MenuDivider />
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>

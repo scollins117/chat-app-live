@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Varela+Round&display=swap');
+
+
+html, body
+{
+    height: 100vh;
+}
+
+.App {
+  min-height: 100vh;
+  background-image: url("./style/cows-6206051.jpg");
+  background-position: top;
+  background-size: cover;
+}
