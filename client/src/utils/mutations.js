@@ -39,6 +39,22 @@ export const ADD_MESSAGE = gql`
   }
 `;
 
+export const GET_MESSAGES =gql`
+  subscription {
+    messages {
+      _id
+      messageText
+      username
+    }
+}
+`;
+
+export const POST_MESSAGE = gql`
+  mutation($user: String!, $messageText: String!) {
+    postMessage(user: $user, messageText: $messageText)
+  }
+`;
+
 export const ADD_FRIEND_DB = gql`
   mutation addFriend($id: ID!) {
     addFriend(friendId: $id) {
