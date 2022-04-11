@@ -1,27 +1,31 @@
 import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
-import { IconButton, Spinner, useToast } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { QUERY_USER } from "../../utils/queries";
-import { useEffect, useState } from "react";
+import { useToast } from "@chakra-ui/toast";
 
-import { useQuery } from "@apollo/client";
+import { useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
 import ProfileModal from "../Profile";
+import { QUERY_USER } from "../../utils/queries";
 import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND } from "../../utils/actions";
+import { ADD_MESSAGE } from "../../utils/mutations";
 
 const Chat = () => {
+  const toast = useToast();
   const [state, dispatch] = useChatContext();
-  const { currentFriend } = state;
+  const { currentFriend, currentChat } = state;
+  const [formState, setFormState] = useState();
+  const [addMessage] = useMutation(ADD_MESSAGE);
 
   const { loading, data } = useQuery(QUERY_USER, {
     variables: { username: currentFriend.username },
   });
 
   if (!loading && data != null) {
-    
-    const {user} = data
+    const { user } = data;
     console.log("CURRENT FRIEND USER DATA: ", user.messages);
   }
 
@@ -31,6 +35,44 @@ const Chat = () => {
       currentFriend: "",
     });
     console.log("current friend: ", currentFriend);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const messageHandler = async (event) => {
+    if (event.key === "Enter" && event.target.value !== "") {
+      console.log("current chat to post message to: ", currentChat);
+      const message = formState.messageInput;
+      console.log("message to send: ", message);
+
+      // get chat info
+      // add message to current chat
+
+      event.preventDefault();
+
+      try {
+        const { data } = await addMessage({
+          variables: { messageText: message, chatId: currentChat },
+        });
+        console.log("addMessage data: ", data)
+      } catch (e) {
+        console.error(e);
+        toast({
+          title: "Error Occured!",
+          description: e,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      }
+    }
   };
 
   return (
@@ -75,7 +117,7 @@ const Chat = () => {
               {/* <ScrollableChat messages={messages} /> */}
             </div>
             <FormControl
-              // onKeyDown={sendMessage}
+              onKeyDown={messageHandler}
               id="first-name"
               isRequired
               mt={3}
@@ -96,8 +138,8 @@ const Chat = () => {
                 variant="filled"
                 bg="#E0E0E0"
                 placeholder="Enter a message.."
-                // value={newMessage}
-                // onChange={typingHandler}
+                name="messageInput"
+                onChange={handleChange}
               />
             </FormControl>
           </Box>

@@ -11,6 +11,7 @@ const ChatProvider = ({ value = [], ...props }) => {
     chatOn: [],
     friends: [],
     currentFriend: '',
+    currentChat: '',
   });
   // use this to confirm it works!
   console.log("Global State: ", state);

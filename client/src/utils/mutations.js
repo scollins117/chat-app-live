@@ -23,12 +23,18 @@ export const LOGIN_USER = gql`
 `;
 
 export const ADD_MESSAGE = gql`
-  mutation addMessage($messageText: String!) {
-    addMessage(messageText: $messageText) {
+  mutation addMessage($messageText: String!, $chatId: ID!) {
+    addMessage(messageText: $messageText, chatId: $chatId) {
+      chat {
+        chatMessages {
+          sender {
+            username
+          }
+        }
+      }
       _id
       messageText
       createdAt
-      username
     }
   }
 `;
@@ -60,14 +66,19 @@ export const REMOVE_FRIEND = gql`
   }
 `;
 
-export const CREATE_CHAT = gql`
-  mutation addChat($chatName: String!) {
-    addChat(chatName: $chatName) {
+export const ADD_OR_ACCESS_CHAT = gql`
+  mutation addChat($chatName: String!, $userId: ID!) {
+    addChat(chatName: $chatName, userId: $userId) {
       _id
       chatName
-      users
-      chatMessages
-      createdAt
+      users {
+        _id
+        username
+      }
+      chatMessages {
+        _id
+        messageText
+      }
     }
   }
 `;

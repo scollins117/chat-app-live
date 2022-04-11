@@ -1,23 +1,23 @@
 import { gql } from "@apollo/client";
 
 export const QUERY_ME = gql`
-{
-  me {
-    _id
-    username
-    email
-    messages {
-      _id
-      messageText
-      createdAt
-    }
-    friends {
+  {
+    me {
       _id
       username
       email
+      messages {
+        _id
+        messageText
+        createdAt
+      }
+      friends {
+        _id
+        username
+        email
+      }
     }
   }
-}
 `;
 
 export const QUERY_ME_BASIC = gql`
@@ -81,13 +81,36 @@ export const QUERY_SEARCH = gql`
 `;
 
 export const QUERY_CHATS = gql`
-  query chats($username: String) {
-    chats(username: $username) {
+  {
+    chats {
       _id
       chatName
-      users
-      chatMessages
-      createdAt
+      users {
+        _id
+        username
+      }
+      chatMessages {
+        messageText
+      }
+    }
+  }
+`;
+
+export const QUERY_CHAT = gql`
+  {
+    chats {
+      _id
+      chatName
+      users {
+        _id
+        username
+      }
+      chatMessages {
+        sender {
+          username
+        }
+        messageText
+      }
     }
   }
 `;

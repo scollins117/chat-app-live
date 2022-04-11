@@ -30,13 +30,12 @@ const Chat = () => {
         type: UPDATE_FRIENDS,
         friends: data.me.friends,
       });
-      console.log("My friends from global state: ", friends);
     }
   }, [data, dispatch]);
 
   return (
     <div style={{ width: "100%" }}>
-      {loggedIn && !loading && data && (
+      {loggedIn && !loading && data !== null && (
         <Header username={data.me.username} email={data.me.email} />
       )}
       <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">

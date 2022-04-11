@@ -29,7 +29,6 @@ import { Tooltip } from "@chakra-ui/tooltip";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/toast";
-import { Spinner } from "@chakra-ui/spinner";
 
 function Header({ username, email }) {
   const toast = useToast();
@@ -37,14 +36,12 @@ function Header({ username, email }) {
   const [state, dispatch] = useChatContext();
   const [addFriend] = useMutation(ADD_FRIEND_DB);
 
-  const loggedIn = Auth.loggedIn();
   const logout = (event) => {
     Auth.logout();
   };
 
   const [search, setSearch] = useState();
-  const [searchItem, setSearchItem] = useState("testuser");
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchItem, setSearchItem] = useState("Matthew");
 
   const { loading, data } = useQuery(QUERY_SEARCH, {
     variables: { username: searchItem },
@@ -95,7 +92,7 @@ function Header({ username, email }) {
       friend: user,
     });
     // add friend to database
-    const addToDb = async () => {
+    const addFriendToDb = async () => {
       console.log("user id to add:", user._id);
       try {
         await addFriend({
@@ -113,7 +110,7 @@ function Header({ username, email }) {
         });
       }
     };
-    addToDb();
+    addFriendToDb();
   };
 
   return (

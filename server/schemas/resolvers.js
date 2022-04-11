@@ -105,6 +105,9 @@ const resolvers = {
       return { token, user };
     },
     addMessage: async (parent, { messageText, chatId }, context) => {
+      console.log("messageText: ", messageText)
+      console.log("chatId: ", chatId)
+      console.log("context.user._id: ", context.user._id)
       if (context.user) {
         const message = await Message.create({
           chat: chatId,

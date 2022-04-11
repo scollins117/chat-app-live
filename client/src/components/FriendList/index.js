@@ -1,21 +1,50 @@
 import { Box, Stack, Text } from "@chakra-ui/layout";
-
+import { useToast } from "@chakra-ui/toast";
+import { useMutation } from "@apollo/client";
 import { useChatContext } from "../../utils/GlobalState";
-import { UPDATE_CURRENT_FRIEND } from "../../utils/actions";
+import {
+  UPDATE_CURRENT_FRIEND,
+  UPDATE_CURRENT_CHAT,
+} from "../../utils/actions";
+import { ADD_OR_ACCESS_CHAT } from "../../utils/mutations";
 
 const FriendList = () => {
+  const toast = useToast();
   const [state, dispatch] = useChatContext();
-  const { currentFriend } = state;
-  const friends = state.friends;
+  const { currentFriend, friends } = state;
+  const [accessChat] = useMutation(ADD_OR_ACCESS_CHAT);
 
-  const handleClick = (user) => {
+  //
+  const handleClick = async (user) => {
     console.log("Friend clicked!", user);
-    dispatch({
+    //update current friend
+    await dispatch({
       type: UPDATE_CURRENT_FRIEND,
       currentFriend: user,
     });
-    console.log("current friend: ", currentFriend);
+    // open chat
+    console.log("user id to add:", user._id);
+    try {
+      const { data } = await accessChat({
+        variables: { chatName: "test", userId: user._id },
+      });
 
+      await dispatch({
+        type: UPDATE_CURRENT_CHAT,
+        currentChat: data.addChat._id,
+      });
+      console.log("current chat: ", data.addChat._id);
+    } catch (e) {
+      console.error(e);
+      toast({
+        title: "Error Occured!",
+        description: "Failed to Access Friend",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
   };
 
   return (

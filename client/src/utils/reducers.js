@@ -7,6 +7,7 @@ import {
   UPDATE_CURRENT_FRIEND,
   UPDATE_FRIENDS,
   ADD_FRIEND,
+  UPDATE_CURRENT_CHAT,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -46,6 +47,12 @@ export const reducer = (state, action) => {
       return {
         ...state,
         friends: [...state.friends, action.friend],
+      };
+
+    case UPDATE_CURRENT_CHAT:
+      return {
+        ...state,
+        currentChat: action.currentChat,
       };
 
     default:
