@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { ADD_USER } from "../../utils/mutations";
-import Auth from "../../utils/auth";
 
+import Auth from "../../utils/auth";
 import { useChatContext } from "../../utils/GlobalState";
+import { ADD_USER } from "../../utils/mutations";
 import { TOGGLE_SHOW } from "../../utils/actions";
 
 import { Button } from "@chakra-ui/button";

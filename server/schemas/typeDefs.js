@@ -48,10 +48,6 @@ const typeDefs = gql`
     addFriend(friendId: ID!): User
     addChat(chatName: String!, userId: ID!): Chat
   }
-
-  type Subscription {
-    messageSent: Message
-  }
 `;
 
 module.exports = typeDefs;

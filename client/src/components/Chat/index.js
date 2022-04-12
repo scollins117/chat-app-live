@@ -5,13 +5,25 @@ import { IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useToast } from "@chakra-ui/toast";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import ProfileModal from "../Profile";
 import { QUERY_USER } from "../../utils/queries";
 import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND } from "../../utils/actions";
 import { ADD_MESSAGE } from "../../utils/mutations";
+import io from "socket.io-client"; // SOCKET IO
+
+const socketUrl = "http://localhost:3001"; // SOCKET IO CONNECT
+const initSocket = () => {
+  const socket = io(socketUrl, { transports: ["websocket"] });
+
+  socket.on("connect", () => {
+    console.log("SOCKET IO CONNECTED");
+  });
+};
+
+initSocket();
 
 const Chat = () => {
   const toast = useToast();

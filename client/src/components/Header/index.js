@@ -51,11 +51,9 @@ function Header({ username, email }) {
     logout();
   };
 
-  if (!loading) {
-    console.log("QUERY_SEARCH data: ", data);
-    if (!loading && data.user) {
-      console.log("QUERY_SEARCH data2: ", data);
-    }
+  if (!loading && data) {
+    console.log("QUERY_SEARCH data: ", data)
+    console.log("Searched Item ", searchItem);
   }
 
   const handleChange = (event) => {
@@ -141,9 +139,9 @@ function Header({ username, email }) {
               <Avatar size="sm" cursor="pointer" name="" src="" />
             </MenuButton>
             <MenuList>
-              <ProfileModal username={username} email={email}>ddddddd
-                <MenuItem>My Profile</MenuItem>ddddddd
-                {" "}dddd
+              <ProfileModal username={username} email={email}>
+                ddddddd
+                <MenuItem>My Profile</MenuItem>ddddddd dddd
               </ProfileModal>
               <MenuDivider />
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>

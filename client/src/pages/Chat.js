@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import Auth from "../utils/auth";
-import { useQuery } from "@apollo/client";
-import { QUERY_ME } from "../utils/queries";
 
 import { Box } from "@chakra-ui/layout";
+import { useQuery } from "@apollo/client";
 
 import Header from "../components/Header";
 import Chatbox from "../components/Chatbox";
 import FriendList from "../components/FriendList";
 
+import Auth from "../utils/auth";
+import { QUERY_ME } from "../utils/queries";
 import { useChatContext } from "../utils/GlobalState";
 import { UPDATE_FRIENDS } from "../utils/actions";
 

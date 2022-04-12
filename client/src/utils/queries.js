@@ -71,13 +71,13 @@ export const QUERY_MESSAGES = gql`
 `;
 
 export const QUERY_SEARCH = gql`
-  query user($username: String!) {
-    user(username: $username) {
-      _id
-      username
-      email
-    }
+{
+  search {
+    _id
+    username
+    email
   }
+}
 `;
 
 export const QUERY_CHATS = gql`

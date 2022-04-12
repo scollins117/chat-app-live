@@ -39,7 +39,7 @@ function Home() {
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text fontSize="4xl" font-family="Varela Round">
+        <Text fontSize="4xl" fontFamily="Varela Round">
         Juhst Chat
         </Text>
       </Box>

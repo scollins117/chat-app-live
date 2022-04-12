@@ -2,6 +2,10 @@ const { AuthenticationError } = require("apollo-server-express");
 const { User, Message, Chat } = require("../models");
 const { signToken } = require("../utils/auth");
 
+const messages = [];
+const subscribers = [];
+const onMessagesUpdates = (fn) => subscribers.push(fn);
+
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
@@ -19,7 +23,7 @@ const resolvers = {
 
     // search all users
     search: async (parent, { username }, context) => {
-      console.log(username);
+      console.log("searched item: ", username);
       const keyword = username
         ? {
             $or: [
@@ -28,8 +32,9 @@ const resolvers = {
             ],
           }
         : {};
-      console.log(keyword);
-      return await User.find(keyword) //.find({ _id: { $ne: context.user._id } })
+      console.log("keyword:", keyword);
+      return await User.find(keyword)
+        .find({ _id: { $ne: context.user._id } })
         .select("-__v -password")
         .populate("messages")
         .populate("friends");
@@ -105,9 +110,9 @@ const resolvers = {
       return { token, user };
     },
     addMessage: async (parent, { messageText, chatId }, context) => {
-      console.log("messageText: ", messageText)
-      console.log("chatId: ", chatId)
-      console.log("context.user._id: ", context.user._id)
+      console.log("messageText: ", messageText);
+      console.log("chatId: ", chatId);
+      console.log("context.user._id: ", context.user._id);
       if (context.user) {
         const message = await Message.create({
           chat: chatId,
@@ -126,7 +131,7 @@ const resolvers = {
           { $push: { messages: message._id } },
           { new: true }
         );
-          console.log("messageAddedToChat:", messageAddedToChat);
+        console.log("messageAddedToChat:", messageAddedToChat);
         return message;
       }
 
@@ -157,8 +162,8 @@ const resolvers = {
         })
           .select("-__v")
           .populate("users")
-
-        console.log("chatExists: ", chatExists);
+          .populate("chatMessages");
+        console.log("the current chat: ", chatExists);
 
         if (chatExists.length > 0) {
           return chatExists[0];
