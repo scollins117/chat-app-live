@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from "react";
 import { useChatReducer } from './reducers';
 
+
 const ChatContext = createContext();
 const { Provider } = ChatContext;
 
@@ -12,6 +13,7 @@ const ChatProvider = ({ value = [], ...props }) => {
     friends: [],
     currentFriend: '',
     currentChat: '',
+    
   });
   // use this to confirm it works!
   console.log("Global State: ", state);
