@@ -21,7 +21,7 @@ const Chat = () => {
   const { loading, data } = useQuery(QUERY_ME);
   if (!loading) {
     console.log("my friends list from global state: ", friends);
-    console.log("QUERY_ME data: ", data)
+    console.log("QUERY_ME data: ", data);
   }
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Chat = () => {
       )}
       <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
         {loggedIn && !loading && <FriendList data={data} />}
-        {loggedIn && <Chatbox data={data} />}
+        {loggedIn && !loading && <Chatbox user={data.me._id} />}
       </Box>
     </div>
   );

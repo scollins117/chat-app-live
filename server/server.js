@@ -1,3 +1,4 @@
+// CURRENT
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const { authMiddleware } = require("./utils/auth");
@@ -52,6 +53,13 @@ const startServer = async () => {
     io.on("connection", (socket) => {
       // related io code
       console.log("SERVER MESSAGE: CLIENT CONNECTED");
+      socket.on('disconnect', () => {
+        console.log('CLIENT DISCONNECTED');
+      });
+
+      socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+      });
     });
   });
 };

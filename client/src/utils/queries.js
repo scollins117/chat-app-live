@@ -71,11 +71,15 @@ export const QUERY_MESSAGES = gql`
 `;
 
 export const QUERY_SEARCH = gql`
-{
-  search {
+query search($username: String!) {
+  search(username: $username) {
     _id
     username
     email
+    messages {
+      messageText
+      createdAt
+    }
   }
 }
 `;
@@ -97,17 +101,18 @@ export const QUERY_CHATS = gql`
 `;
 
 export const QUERY_CHAT = gql`
-  {
-    chats {
+  query chat($chatId: ID!) {
+    chat(_id: $chatId) {
       _id
       chatName
       users {
-        _id
         username
+        _id
       }
       chatMessages {
+        _id
         sender {
-          username
+          _id
         }
         messageText
       }

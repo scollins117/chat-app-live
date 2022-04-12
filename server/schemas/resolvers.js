@@ -27,14 +27,13 @@ const resolvers = {
       const keyword = username
         ? {
             $or: [
-              { name: { $regex: username, $options: "i" } },
+              { username: { $regex: username, $options: "i" } },
               { email: { $regex: username, $options: "i" } },
             ],
           }
         : {};
       console.log("keyword:", keyword);
       return await User.find(keyword)
-        .find({ _id: { $ne: context.user._id } })
         .select("-__v -password")
         .populate("messages")
         .populate("friends");
@@ -66,6 +65,7 @@ const resolvers = {
 
     // get chat
     chat: async (parent, { _id }) => {
+      console.log("Chat id to access: ", _id);
       return await Chat.findOne({ _id })
         .select("-__v")
         .populate({ path: "chatMessages", populate: { path: "sender" } })

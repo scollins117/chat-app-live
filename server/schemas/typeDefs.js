@@ -35,7 +35,7 @@ const typeDefs = gql`
     chat(_id: ID!): Chat
     chats: [Chat]
     users: [User]
-    search: [User]
+    search(username: String!): [User]
     user(username: String!): User
     messages: [Message]
     message(_id: ID!): Message

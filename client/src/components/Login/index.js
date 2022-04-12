@@ -55,7 +55,7 @@ const Login = () => {
       console.error(e);
       toast({
         title: "Error Occured!",
-        description: error.response.data.message,
+        description: error,
         status: "error",
         duration: 5000,
         isClosable: true,

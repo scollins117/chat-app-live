@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import ProfileModal from "../Profile";
 import Auth from "../../utils/auth";
-import { QUERY_SEARCH } from "../../utils/queries";
+import { QUERY_SEARCH, QUERY_ME } from "../../utils/queries";
 import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND, ADD_FRIEND } from "../../utils/actions";
 import { ADD_FRIEND_DB } from "../../utils/mutations";
@@ -40,21 +40,26 @@ function Header({ username, email }) {
     Auth.logout();
   };
 
-  const [search, setSearch] = useState();
+  const [searchInput, setSearchInput] = useState();
+  const [searchResult, setSearchResult] = useState();
   const [searchItem, setSearchItem] = useState("Matthew");
 
   const { loading, data } = useQuery(QUERY_SEARCH, {
     variables: { username: searchItem },
   });
 
+  useEffect(() => {
+    if (data) {
+      const { search } = data;
+      setSearchResult(search);
+      console.log("QUERY_SEARCH data: ", searchResult);
+      console.log("Searched Item ", searchItem);
+    }
+  }, [data, searchItem]);
+
   const logoutHandler = () => {
     logout();
   };
-
-  if (!loading && data) {
-    console.log("QUERY_SEARCH data: ", data)
-    console.log("Searched Item ", searchItem);
-  }
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -63,11 +68,11 @@ function Header({ username, email }) {
       type: UPDATE_CURRENT_FRIEND,
       currentFriend: value,
     });
-    setSearch(value);
+    setSearchInput(value);
   };
 
   const handleSearch = async () => {
-    if (!search) {
+    if (!searchInput) {
       toast({
         title: "Please Enter something in search",
         status: "warning",
@@ -77,7 +82,7 @@ function Header({ username, email }) {
       });
       return;
     } else {
-      setSearchItem(search);
+      setSearchItem(searchInput);
     }
   };
 
@@ -85,10 +90,12 @@ function Header({ username, email }) {
     console.log("Friend clicked!", user);
     console.log("current friend: ", state.currentFriend);
     console.log("friends: ", state.friends);
+
     dispatch({
       type: ADD_FRIEND,
-      friend: user,
+      friend: { ...user },
     });
+
     // add friend to database
     const addFriendToDb = async () => {
       console.log("user id to add:", user._id);
@@ -107,6 +114,18 @@ function Header({ username, email }) {
           position: "bottom-left",
         });
       }
+      if (!searchResult) {
+        toast({
+          title: "Failed to Find Friend",
+          description: "Failed to Find Friend",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom-left",
+        });
+      }
+      console.log(searchResult)
+      onClose(); 
     };
     addFriendToDb();
   };
@@ -149,6 +168,7 @@ function Header({ username, email }) {
           </Menu>
         </div>
       </Box>
+
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
@@ -156,17 +176,17 @@ function Header({ username, email }) {
           <DrawerBody>
             <Box d="flex" pb={2}>
               <Input
-                placeholder="Search by username"
+                placeholder="Search by username OR"
                 mr={2}
                 name="search"
                 onChange={handleChange}
               />
               <Button onClick={handleSearch}>Go</Button>
             </Box>
-            {!loading && data.user && (
+            {searchResult?.map((user) => (
               <Box
-                key={data.user._id}
-                onClick={() => handleClick(data.user)}
+                key={user._id}
+                onClick={() => handleClick(user)}
                 cursor="pointer"
                 bg="#E8E8E8"
                 _hover={{
@@ -186,18 +206,18 @@ function Header({ username, email }) {
                   mr={2}
                   size="sm"
                   cursor="pointer"
-                  name={data.user.username}
+                  name={user.username}
                   src=""
                 />
                 <Box>
-                  <Text>{data.user.username}</Text>
+                  <Text>{user.username}</Text>
                   <Text fontSize="xs">
                     <b>Email : </b>
-                    {data.user.email}
+                    {user.email}
                   </Text>
                 </Box>
               </Box>
-            )}
+            ))}
 
             {/* loadingChat && <Spinner ml="auto" d="flex" />} */}
           </DrawerBody>

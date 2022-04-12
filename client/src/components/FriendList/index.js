@@ -33,7 +33,7 @@ const FriendList = () => {
         type: UPDATE_CURRENT_CHAT,
         currentChat: data.addChat._id,
       });
-      console.log("current chat: ", data.addChat._id);
+      console.log("current chat from FriendList: ", data.addChat._id);
     } catch (e) {
       console.error(e);
       toast({
