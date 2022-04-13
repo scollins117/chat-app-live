@@ -39,9 +39,8 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <Router>
     <ApolloProvider client={client}>
-      
+      <Router>
         <ChatProvider>
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
             <div className="App">
@@ -58,9 +57,8 @@ function App() {
             </div>
           </Stack>
         </ChatProvider>
-      
+      </Router>
     </ApolloProvider>
-    </Router>
   );
 }
 
