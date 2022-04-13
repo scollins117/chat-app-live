@@ -139,7 +139,7 @@ function Header({ username, email }) {
         d="flex"
         justifyContent="space-between"
         alignItems="center"
-        bg="white"
+        bg="#9A778A"
         w="100%"
         p="5px 10px 5px 10px"
         borderWidth="5px"

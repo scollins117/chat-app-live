@@ -173,7 +173,8 @@ const Chat = () => {
             />
             <>
               {currentFriend.username}
-              <ProfileModal />
+
+              <ProfileModal chatFriend={currentFriend}/>
             </>
           </Text>
           <Box

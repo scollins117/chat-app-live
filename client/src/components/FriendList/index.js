@@ -7,6 +7,7 @@ import {
   UPDATE_CURRENT_CHAT,
 } from "../../utils/actions";
 import { ADD_OR_ACCESS_CHAT } from "../../utils/mutations";
+import { CloseButton } from "@chakra-ui/react";
 
 const FriendList = () => {
   const toast = useToast();
@@ -27,14 +28,16 @@ const FriendList = () => {
       const { data } = await accessChat({
         variables: { chatName: "test", userId: user._id },
       });
-      console.log("CHAT ID FROM ACCESS CHAT AFTER FRIEND CLICKED", data.addChat._id,)
+      console.log(
+        "CHAT ID FROM ACCESS CHAT AFTER FRIEND CLICKED",
+        data.addChat._id
+      );
 
       if (data) {
         await dispatch({
           type: UPDATE_CURRENT_CHAT,
           currentChat: data.addChat._id,
         });
-
       }
     } catch (e) {
       console.error(e);
@@ -59,6 +62,7 @@ const FriendList = () => {
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth="1px"
+      className="semi-clear"
     >
       <Box
         pb={3}
@@ -86,6 +90,10 @@ const FriendList = () => {
           <Stack overflowY="scroll">
             {me.friends.map((friend) => (
               <Box
+                d="flex"
+                w="100%"
+                justifyContent="space-between"
+                alignItems="center"
                 onClick={() => {
                   handleClick(friend);
                 }}
@@ -98,6 +106,7 @@ const FriendList = () => {
                 key={friend._id}
               >
                 <Text>{friend.username}</Text>
+                <CloseButton alignSelf={"right"} />
                 {/* {chat.latestMessage && (
                   <Text fontSize="xs">
                     <b>{chat.latestMessage.sender.name} : </b>

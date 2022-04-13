@@ -6,26 +6,6 @@ import { useChatContext } from "../../utils/GlobalState";
 const ChatFeed = ({ messages }) => {
   const [state, dispatch] = useChatContext();
   const {chat, me } = state;
-  
-  const colorfn = (m) => {
-    if (m.sender._id === me._id) {
-      // console.log(" from user");
-      return true;
-    } else {
-      // console.log(" from friend");
-      return false;
-    }
-  };
-
-  const marginLeftFn = (m) => {
-    if (m.sender._id === me._id) {
-      // console.log(" from friend");
-      return 40;
-    } else {
-      // console.log(" from friend");
-      return "auto";
-    }
-  };
 
   console.log("messages from global state AT FEED", messages);
   return (
@@ -40,16 +20,17 @@ const ChatFeed = ({ messages }) => {
                 size="sm"
                 cursor="pointer"
                 name={m.username}
-                src=""
+                src="https://i.pravatar.cc/300"
+                // style={{marginLeft: `${m.sender._id === me._id ? 4 : 'auto'}`}}
               />
             </Tooltip>
             <span
               style={{
                 backgroundColor: `${
-                  colorfn(m) ? "#BFD3C1" : "#EFC7C2"
+                  m.sender._id === me._id ? "#BFD3C1" : "#EFC7C2"
                 }`,
-                marginLeft: `${marginLeftFn(m)}`, // if from user marginleft 0 : 33
-                marginTop: `${m._id === m.username ? 10 : 3}`,
+                marginLeft: `${m.sender._id === me._id ? 40 : 'auto'}`, // if from user marginleft 0 : 33
+                marginTop: `${m.sender._id === me._id ? 10 : 3}`,
                 borderRadius: "20px",
                 padding: "5px 15px",
                 maxWidth: "75%",
