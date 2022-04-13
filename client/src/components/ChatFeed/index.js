@@ -2,13 +2,13 @@ import { Avatar } from "@chakra-ui/avatar";
 import { Tooltip } from "@chakra-ui/tooltip";
 import ScrollableFeed from "react-scrollable-feed";
 import { useChatContext } from "../../utils/GlobalState";
-import { QUERY_CHAT } from "../../utils/queries";
-import { useQuery } from "@apollo/client";
-import { useEffect } from "react";
+// import { QUERY_CHAT } from "../../utils/queries";
+// import { useQuery } from "@apollo/client";
+// import { useEffect } from "react";
 
 const ChatFeed = ({ messages }) => {
-  const [state, dispatch] = useChatContext();
-  const { chat, me } = state;
+  const [state, /*dispatch*/] = useChatContext();
+  const { /*chat,*/ me } = state;
   
   const dataExposeFunction = (m) => {
     if (m.sender._id === me._id) {
