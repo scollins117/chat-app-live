@@ -17,9 +17,7 @@ const Chat = () => {
   const loggedIn = Auth.loggedIn();
   const [state, dispatch] = useChatContext();
 
-  const { me } = state;
-
-  const { loading, data } = useQuery(QUERY_ME);
+  const { data } = useQuery(QUERY_ME);
 
   useEffect(() => {
     if (data) {
@@ -33,12 +31,12 @@ const Chat = () => {
  
   return (
     <div style={{ width: "100%" }}>
-      {loggedIn && !loading && data !== null && (
+      {loggedIn &&  (
         <Header/>
       )}
       <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-        {loggedIn && !loading && <FriendList />}
-        {loggedIn && !loading && <Chatbox/>}
+        {loggedIn &&  <FriendList />}
+        {loggedIn &&  <Chatbox/>}
       </Box>
     </div>
   );

@@ -38,7 +38,7 @@ const Signup = () => {
       [name]: value,
     });
   };
-  
+
   // submit form (notice the async!)
   const handleFormSubmit = async (event) => {
     console.log("formstate: ", formState);
@@ -73,41 +73,43 @@ const Signup = () => {
   };
 
   return (
-    <VStack spacing="5px">
-      <FormControl id="signup-username" isRequired>
-        <FormLabel>Name</FormLabel>
-        <Input
-          name="username"
-          placeholder="Enter Your Name"
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl id="signup-email" isRequired>
-        <FormLabel>Email Address</FormLabel>
-        <Input
-          name="email"
-          type="email"
-          placeholder="Enter Your Email Address"
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl id="signup-password" isRequired>
-        <FormLabel>Password</FormLabel>
-        <InputGroup size="md">
+    <>{console.log("COMPONENT:  SINGUP")}
+      {" "}
+      <VStack spacing="5px">
+        <FormControl id="signup-username" isRequired>
+          <FormLabel>Name</FormLabel>
           <Input
-            name="password"
-            type={showOpen ? "text" : "password"}
-            placeholder="Enter Password"
+            name="username"
+            placeholder="Enter Your Name"
             onChange={handleChange}
           />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={toggleShow}>
-              {showOpen ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
-      {/* <FormControl id="confirm-password" isRequired>
+        </FormControl>
+        <FormControl id="signup-email" isRequired>
+          <FormLabel>Email Address</FormLabel>
+          <Input
+            name="email"
+            type="email"
+            placeholder="Enter Your Email Address"
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl id="signup-password" isRequired>
+          <FormLabel>Password</FormLabel>
+          <InputGroup size="md">
+            <Input
+              name="password"
+              type={showOpen ? "text" : "password"}
+              placeholder="Enter Password"
+              onChange={handleChange}
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={toggleShow}>
+                {showOpen ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+        {/* <FormControl id="confirm-password" isRequired>
         <FormLabel>Confirm Password</FormLabel>
         <InputGroup size="md">
           <Input
@@ -122,15 +124,16 @@ const Signup = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl> */}
-      <Button
-        colorScheme="blue"
-        width="100%"
-        style={{ marginTop: 15 }}
-        onClick={handleFormSubmit}
-      >
-        Sign Up
-      </Button>
-    </VStack>
+        <Button
+          colorScheme="blue"
+          width="100%"
+          style={{ marginTop: 15 }}
+          onClick={handleFormSubmit}
+        >
+          Sign Up
+        </Button>
+      </VStack>
+    </>
   );
 };
 

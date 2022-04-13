@@ -85,7 +85,6 @@ const Chat = () => {
     socket.on("connect", () => {
       console.log("CLIENT SIDE: SOCKET IO CONNECTED");
     });
-    console.log("socket setup data:  ", me);
     socket.emit("setup", me);
   });
 
@@ -102,6 +101,7 @@ const Chat = () => {
     if (event.key === "Enter" && event.target.value !== "") {
       console.log("(((((============USER HIT ENTER==========)))))");
       const message = event.target.value; //message from updated form state
+      event.target.value = ""
       console.log("MESSAGE going to addMessage: ", message);
       console.log("CHAT ID going to addMessage: ", currentChat);
 
@@ -153,7 +153,7 @@ const Chat = () => {
   }, [socket]);
 
   return (
-    <>
+    <> {console.log("COMPONENT:  ___CHAT___")}
       {currentFriend && messages ? (
         <>
           <Text
