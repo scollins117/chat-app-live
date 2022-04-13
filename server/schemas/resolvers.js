@@ -128,7 +128,7 @@ const resolvers = {
         try {
           var message = await Message.create(newMessage);
 
-          message = await message.populate("sender", "username");
+          message = await message.populate("sender");
           message = await message.populate("chat");
           message = await User.populate(message, {
             path: "chat.users",
@@ -144,27 +144,6 @@ const resolvers = {
           throw new Error(error.message);
         }
 
-        // if (context.user) {
-        //   const message = await Message.create({
-        //     chat: chatId,
-        //     sender: context.user._id,
-        //     messageText: messageText,
-        //   });
-
-        //   const messageAddedToChat = await Chat.findByIdAndUpdate(
-        //     { _id: chatId },
-        //     { $push: { chatMessages: message._id } },
-        //     { new: true }
-        //   );
-
-        //   await User.findByIdAndUpdate(
-        //     { _id: context.user._id },
-        //     { $push: { messages: message._id } },
-        //     { new: true }
-        //   );
-        //   console.log("messageAddedToChat:", messageAddedToChat);
-        //   return message;
-        // }
         return message;
       }
       throw new AuthenticationError("You need to be logged in!");

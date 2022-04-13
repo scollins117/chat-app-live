@@ -70,7 +70,6 @@ const Login = () => {
         <FormLabel>Email Address</FormLabel>
         <Input
           name="email"
-          // value={email}
           type="email"
           placeholder="Enter Your Email Address"
           onChange={handleChange}
@@ -81,7 +80,6 @@ const Login = () => {
         <InputGroup size="md">
           <Input
             name="password"
-            // value={password}
             onChange={handleChange}
             type={showOpen ? "text" : "password"}
             placeholder="Enter password"
@@ -98,7 +96,6 @@ const Login = () => {
         width="100%"
         style={{ marginTop: 15 }}
         onClick={handleFormSubmit}
-        // isLoading={loading}
       >
         Login
       </Button>

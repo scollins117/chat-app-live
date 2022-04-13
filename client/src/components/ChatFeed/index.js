@@ -2,18 +2,25 @@ import { Avatar } from "@chakra-ui/avatar";
 import { Tooltip } from "@chakra-ui/tooltip";
 import ScrollableFeed from "react-scrollable-feed";
 import { useChatContext } from "../../utils/GlobalState";
-import { QUERY_CHAT } from "../../utils/queries";
-import { useQuery } from "@apollo/client";
-import { useEffect } from "react";
 
 const ChatFeed = ({ messages }) => {
   const [state, dispatch] = useChatContext();
-  const { chat, me } = state;
+  const {chat, me } = state;
   
-  const dataExposeFunction = (m) => {
+  const colorfn = (m) => {
     if (m.sender._id === me._id) {
       // console.log(" from user");
-      return 33;
+      return true;
+    } else {
+      // console.log(" from friend");
+      return false;
+    }
+  };
+
+  const marginLeftFn = (m) => {
+    if (m.sender._id === me._id) {
+      // console.log(" from friend");
+      return 40;
     } else {
       // console.log(" from friend");
       return "auto";
@@ -39,10 +46,10 @@ const ChatFeed = ({ messages }) => {
             <span
               style={{
                 backgroundColor: `${
-                  m._id === me.username ? "#BFD3C1" : "#EFC7C2"
+                  colorfn(m) ? "#BFD3C1" : "#EFC7C2"
                 }`,
-                // marginLeft: `${dataExposeFunction(m)}`, // if from user marginleft 0 : 33
-                marginTop: `${m._id === me.username ? 10 : 3}`,
+                marginLeft: `${marginLeftFn(m)}`, // if from user marginleft 0 : 33
+                marginTop: `${m._id === m.username ? 10 : 3}`,
                 borderRadius: "20px",
                 padding: "5px 15px",
                 maxWidth: "75%",

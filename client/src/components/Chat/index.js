@@ -9,7 +9,7 @@ import ChatFeed from "../ChatFeed";
 import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import ProfileModal from "../Profile";
-import { QUERY_CHAT, QUERY_ME } from "../../utils/queries";
+import { QUERY_CHAT } from "../../utils/queries";
 import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND, UPDATE_CHAT } from "../../utils/actions";
 import { ADD_MESSAGE } from "../../utils/mutations";
@@ -23,7 +23,6 @@ const Chat = () => {
   const [state, dispatch] = useChatContext();
   const { currentFriend, currentChat, me } = state;
   const [messages, setMessages] = useState([]);
-  const [formState, setFormState] = useState();
   const [addMessage] = useMutation(ADD_MESSAGE);
 
   // console.log("CHAT MESSAGES ON CHAT LOAD: ", messages);
@@ -76,9 +75,8 @@ const Chat = () => {
         roomname
       );
 
-        socket.emit("joinRoom", currentChat);
-        console.log("======CLIENT JOINED CHAT: ", currentChat);
-
+      socket.emit("joinRoom", currentChat);
+      console.log("======CLIENT JOINED CHAT: ", currentChat);
     }
   }, [data, dispatch]);
 
@@ -118,7 +116,7 @@ const Chat = () => {
           const newMessage = data.addMessage;
           setMessages([...messages, newMessage]);
           const chatId = currentChat;
-          refetch()
+          refetch();
           socket.emit("chat", { newMessage, chatId });
         }
 
@@ -139,60 +137,20 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on("message", (data) => {
-      refetch()
-      console.log("CHAT MESSAGES ON CHAT LOAD: ", messages);
-      let temp = data.data;
-      // const idFunc = () => {
-      //   return Math.random().toString(36).slice(2);
-      // };
-      // let id = Math.random().toString(36).slice(2);
-      // temp.push({
-      //   id: id,
-      //   userId: data.userId,
-      //   username: data.username,
-      //   messageText: data.text,
-      // });
-      console.log("ON RECEIVER MESSAGES STATE: ", messages);
-      console.log("***************PUSHED TO MESSAGE STATE: ", temp);
-      setMessages([temp]);
-      return () => {
-        // This is the cleanup function
-      };
+      if (messages.length < 1) {
+        refetch();
+      } else {
+        console.log("CHAT MESSAGES ON CHAT LOAD: ", messages);
+        let temp = data.data;
+        console.log("ON RECEIVER MESSAGES STATE: ", messages);
+        console.log("***************PUSHED TO MESSAGE STATE: ", temp);
+        setMessages([temp]);
+        return () => {
+          // This is the cleanup function
+        };
+      }
     });
   }, [socket]);
-
-  // useEffect(() => {
-  //   socket.emit("setup", user);
-  //   console.log("user info to socket setup: ", user);
-  //   socket.on("connected", () => setSocketConnected(true));
-
-  //   // eslint-disable-next-line
-  // }, []);
-
-  // // useEffect(() => {
-  // //   refetch();
-
-  // //   selectedChatCompare = currentChat; //
-  // //   // eslint-disable-next-line
-  // // }, [currentChat]);
-
-  // useEffect(() => {
-  // socket.on("message recieved", (newMessageRecieved) => {
-  //   console.log("MESSAGE RECIEVED: ", newMessageRecieved);
-  //   // if (
-  //   //   !selectedChatCompare || // if chat is not selected or doesn't match current chat
-  //   //   selectedChatCompare._id !== newMessageRecieved.chat._id
-  //   // ) {
-  //   //   refetch();
-  //   // } else {
-  //     // dispatch({
-  //     //   type: ADD_MESSAGE,
-  //     //   chat: [{ ...newMessageRecieved }],
-  //     // });
-  //     refetch();
-  //   // }
-  //   });
-  // });
 
   return (
     <>

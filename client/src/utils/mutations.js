@@ -32,6 +32,7 @@ export const ADD_MESSAGE = gql`
         }
       }
       sender {
+        username
         _id
       }
       _id
