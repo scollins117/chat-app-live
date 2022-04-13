@@ -6,7 +6,7 @@ mongoose.connect(
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // useCreateIndex: true,
-    // useFindAndModify: falsee
+    // useFindAndModify: false
 });
 
 module.exports = mongoose.connection;
