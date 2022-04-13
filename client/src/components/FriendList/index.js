@@ -8,13 +8,11 @@ import {
 } from "../../utils/actions";
 import { ADD_OR_ACCESS_CHAT } from "../../utils/mutations";
 
-const FriendList = ({socket}) => {
-  console.log("SOCKET AS IT STANDS IN FRIENDSLIST: ", socket);
+const FriendList = () => {
   const toast = useToast();
   const [state, dispatch] = useChatContext();
   const { currentFriend, me } = state;
   const [accessChat] = useMutation(ADD_OR_ACCESS_CHAT);
-  console.log("friends array", me.friends)
   //
   const handleClick = async (user) => {
     console.log("(((((((===========FRIEND CLICKED ===========))))))", user);
@@ -29,6 +27,7 @@ const FriendList = ({socket}) => {
       const { data } = await accessChat({
         variables: { chatName: "test", userId: user._id },
       });
+      console.log("CHAT ID FROM ACCESS CHAT AFTER FRIEND CLICKED", data.addChat._id,)
 
       if (data) {
         await dispatch({

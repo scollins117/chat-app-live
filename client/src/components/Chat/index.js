@@ -26,8 +26,6 @@ const Chat = () => {
   const [formState, setFormState] = useState();
   const [addMessage] = useMutation(ADD_MESSAGE);
 
-  let messageArr = [];
-
   // console.log("CHAT MESSAGES ON CHAT LOAD: ", messages);
   //   {
   //   update(cache, { data: { addMessage } }) {
@@ -57,9 +55,6 @@ const Chat = () => {
     variables: { chatId: currentChat, enabled: !!currentChat },
     // The query will not execute until the userId exists
   });
-  // if (data) {
-  //   setMessages(data.chat.chatMessages);
-  // }
 
   useEffect(() => {
     if (data && data.chat) {
@@ -71,7 +66,6 @@ const Chat = () => {
       // socket.emit("join chat", currentChat);
       setMessages(data.chat.chatMessages);
       console.log("USEEFFECT MESSAGES STATE: ", messages);
-      messageArr.push(data.chat.chatMessages);
 
       const username = me.username;
       const roomname = currentChat;
@@ -81,19 +75,20 @@ const Chat = () => {
         username,
         roomname
       );
-      if (username !== "" && roomname !== "") {
-        socket.emit("joinRoom", { id, username, roomname , currentChat});
+
+        socket.emit("joinRoom", currentChat);
         console.log("======CLIENT JOINED CHAT: ", currentChat);
-      }
+
     }
   }, [data, dispatch]);
 
   useEffect(() => {
     socket = io(socketUrl, { transports: ["websocket"] });
-
     socket.on("connect", () => {
       console.log("CLIENT SIDE: SOCKET IO CONNECTED");
     });
+    console.log("socket setup data:  ", me);
+    socket.emit("setup", me);
   });
 
   const handleClick = () => {
@@ -118,12 +113,13 @@ const Chat = () => {
         });
 
         if (!loading && data) {
-          console.log("data from addMessage: ", data.addMessage);
+          console.log("data from addMessage: ", data);
           console.log("CURRENT MESSAGE STATE DATA:", messages);
           const newMessage = data.addMessage;
-          setMessages([...messages, data.addMessage]);
-          messageArr.push(data.addMessage);
-          socket.emit("chat", data.addMessage);
+          setMessages([...messages, newMessage]);
+          const chatId = currentChat;
+          refetch()
+          socket.emit("chat", { newMessage, chatId });
         }
 
         // update state with new data
@@ -143,6 +139,7 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on("message", (data) => {
+      refetch()
       console.log("CHAT MESSAGES ON CHAT LOAD: ", messages);
       let temp = data.data;
       // const idFunc = () => {
@@ -157,7 +154,7 @@ const Chat = () => {
       // });
       console.log("ON RECEIVER MESSAGES STATE: ", messages);
       console.log("***************PUSHED TO MESSAGE STATE: ", temp);
-      setMessages([...messages, temp]);
+      setMessages([temp]);
       return () => {
         // This is the cleanup function
       };
@@ -218,8 +215,7 @@ const Chat = () => {
             />
             <>
               {currentFriend.username}
-              <ProfileModal
-              />
+              <ProfileModal />
             </>
           </Text>
           <Box

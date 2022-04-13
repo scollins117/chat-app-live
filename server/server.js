@@ -60,34 +60,51 @@ const startServer = async () => {
     io.on("connection", (socket) => {
       console.log("SOCKET SERVER IS CONNECTED: SERVER END");
       //for a new user joining the room
-      socket.on("joinRoom", ({ id, username, roomname }) => {
-        // PROVIDE USERNAME AND CHAT ID
-        //* create user
-        const p_user = join_User(id, username, roomname);
-        console.log("id", id, "p_user.room", p_user.room);
-        socket.join(p_user.room);
-        socketId = id;
+      socket.on("setup", (userData) => {
+        socket.join(userData._id);
+        socket.emit("connected");
       });
+    
+      socket.on("joinRoom", (room) => {
+        socket.join(room);
+        console.log("User Joined Room: " + room);
+      });
+      // socket.on("joinRoom", ({ id, username, roomname }) => {
+      //   // PROVIDE USERNAME AND CHAT ID
+      //   //* create user
+      //   const p_user = join_User(id, username, roomname);
+      //   console.log("id", id, "p_user.room", p_user.room);
+      //   socket.join(p_user.room);
+      //   socketId = id;
+      // });
 
       //user sending message
-      socket.on("chat", (data) => {
+      socket.on("chat", (data, room) => {
         //gets the room user and the message sent
-        const p_user = get_Current_User(socketId);
-        console.log("chat p_user: ", p_user);
+        // const p_user = get_Current_User(socketId);
+        // console.log("chat p_user: ", p_user):
         console.log("DATA MESSAGE RECIEVED FROM CLIENT: ", data);
-        console.log("id 2", socketId, "p_user.room 2", p_user);
-        io.to(p_user.room).emit("message", {
+        // console.log("id 2", socketId, "p_user.room 2", p_user);
+        io.to(room).emit("message", {
           data,
         });
       });
 
-      //when the user exits the room
-      socket.on("disconnect", () => {
+      // //when the user exits the room
+      // socket.on("leaveRoom", () => {
+      //   console.log("USER DISCONNECTED");
+      //   // const p_user = get_Current_User(socketId);
+      //   socket.leave(room);
+      // });
+
+      socket.off("setup", () => {
         console.log("USER DISCONNECTED");
-        const p_user = get_Current_User(socketId);
-        socket.leave(p_user.room);
+        socket.leave(userData._id);
       });
+
     });
+
+    
 
     //     io.on("connection", (socket) => {
     //       console.log("Connected to socket.io");

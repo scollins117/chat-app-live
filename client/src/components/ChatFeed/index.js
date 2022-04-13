@@ -11,7 +11,7 @@ const ChatFeed = ({ messages }) => {
   const { chat, me } = state;
   
   const dataExposeFunction = (m) => {
-    if (m.userId === me.username) {
+    if (m.sender._id === me._id) {
       // console.log(" from user");
       return 33;
     } else {
@@ -41,7 +41,7 @@ const ChatFeed = ({ messages }) => {
                 backgroundColor: `${
                   m._id === me.username ? "#BFD3C1" : "#EFC7C2"
                 }`,
-                marginLeft: `${dataExposeFunction(m)}`, // if from user marginleft 0 : 33
+                // marginLeft: `${dataExposeFunction(m)}`, // if from user marginleft 0 : 33
                 marginTop: `${m._id === me.username ? 10 : 3}`,
                 borderRadius: "20px",
                 padding: "5px 15px",

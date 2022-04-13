@@ -198,6 +198,7 @@ const resolvers = {
         console.log("the current chat: ", chatExists);
 
         if (chatExists.length > 0) {
+          console.log("CHAT ALREADY EXISTS ", chatExists);
           return chatExists[0];
         } else {
           let chatData = {
