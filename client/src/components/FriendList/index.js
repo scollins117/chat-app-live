@@ -8,15 +8,16 @@ import {
 } from "../../utils/actions";
 import { ADD_OR_ACCESS_CHAT } from "../../utils/mutations";
 
-const FriendList = () => {
+const FriendList = ({socket}) => {
+  console.log("SOCKET AS IT STANDS IN FRIENDSLIST: ", socket);
   const toast = useToast();
   const [state, dispatch] = useChatContext();
-  const { currentFriend, friends } = state;
+  const { currentFriend, me } = state;
   const [accessChat] = useMutation(ADD_OR_ACCESS_CHAT);
-
+  console.log("friends array", me.friends)
   //
   const handleClick = async (user) => {
-    console.log("Friend clicked!", user);
+    console.log("(((((((===========FRIEND CLICKED ===========))))))", user);
     //update current friend
     await dispatch({
       type: UPDATE_CURRENT_FRIEND,
@@ -29,11 +30,13 @@ const FriendList = () => {
         variables: { chatName: "test", userId: user._id },
       });
 
-      await dispatch({
-        type: UPDATE_CURRENT_CHAT,
-        currentChat: data.addChat._id,
-      });
-      console.log("current chat from FriendList: ", data.addChat._id);
+      if (data) {
+        await dispatch({
+          type: UPDATE_CURRENT_CHAT,
+          currentChat: data.addChat._id,
+        });
+
+      }
     } catch (e) {
       console.error(e);
       toast({
@@ -80,9 +83,9 @@ const FriendList = () => {
         borderRadius="lg"
         overflowY="hidden"
       >
-        {friends && (
+        {me && me.friends && (
           <Stack overflowY="scroll">
-            {friends.map((friend) => (
+            {me.friends.map((friend) => (
               <Box
                 onClick={() => {
                   handleClick(friend);

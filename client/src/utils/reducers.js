@@ -5,9 +5,11 @@ import {
   TOGGLE_SHOW,
   UPDATE_CURRENT_SEARCH,
   UPDATE_CURRENT_FRIEND,
-  UPDATE_FRIENDS,
+  UPDATE_ME,
   ADD_FRIEND,
   UPDATE_CURRENT_CHAT,
+  UPDATE_CHAT,
+  UPDATE_FRIENDS
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -37,22 +39,37 @@ export const reducer = (state, action) => {
         currentFriend: action.currentFriend,
       };
 
-    case UPDATE_FRIENDS:
+    case UPDATE_ME:
       return {
         ...state,
-        friends: [...action.friends],
+        me: action.me,
       };
 
     case ADD_FRIEND:
+      console.log("state: ", state, "action: ", action);
       return {
         ...state,
         friends: [...state.friends, action.friend],
+      };
+
+    case UPDATE_FRIENDS:
+      console.log("state: ", state, "action: ", action);
+      return {
+        ...state,
+        friends: [action.friend],
       };
 
     case UPDATE_CURRENT_CHAT:
       return {
         ...state,
         currentChat: action.currentChat,
+      };
+
+    case UPDATE_CHAT:
+      console.log("action: ", action);
+      return {
+        ...state,
+        chat: action.chat,
       };
 
     default:

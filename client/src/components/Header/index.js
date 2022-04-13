@@ -3,9 +3,9 @@ import { useQuery, useMutation } from "@apollo/client";
 import ProfileModal from "../Profile";
 import Auth from "../../utils/auth";
 import { QUERY_SEARCH, QUERY_ME } from "../../utils/queries";
-import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND, ADD_FRIEND } from "../../utils/actions";
 import { ADD_FRIEND_DB } from "../../utils/mutations";
+import { useChatContext } from "../../utils/GlobalState";
 
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
@@ -30,11 +30,14 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/toast";
 
+
 function Header({ username, email }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [state, dispatch] = useChatContext();
   const [addFriend] = useMutation(ADD_FRIEND_DB);
+
+  const [state, dispatch] = useChatContext();
+  const { me } = state;
 
   const logout = (event) => {
     Auth.logout();
@@ -42,7 +45,7 @@ function Header({ username, email }) {
 
   const [searchInput, setSearchInput] = useState();
   const [searchResult, setSearchResult] = useState();
-  const [searchItem, setSearchItem] = useState("Matthew");
+  const [searchItem, setSearchItem] = useState("");
 
   const { loading, data } = useQuery(QUERY_SEARCH, {
     variables: { username: searchItem },
@@ -158,9 +161,8 @@ function Header({ username, email }) {
               <Avatar size="sm" cursor="pointer" name="" src="" />
             </MenuButton>
             <MenuList>
-              <ProfileModal username={username} email={email}>
-                ddddddd
-                <MenuItem>My Profile</MenuItem>ddddddd dddd
+              <ProfileModal>
+                <MenuItem>My Profile</MenuItem>
               </ProfileModal>
               <MenuDivider />
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>

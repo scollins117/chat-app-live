@@ -26,11 +26,13 @@ export const ADD_MESSAGE = gql`
   mutation addMessage($messageText: String!, $chatId: ID!) {
     addMessage(messageText: $messageText, chatId: $chatId) {
       chat {
-        chatMessages {
-          sender {
-            username
-          }
+        _id
+        users {
+          _id
         }
+      }
+      sender {
+        _id
       }
       _id
       messageText

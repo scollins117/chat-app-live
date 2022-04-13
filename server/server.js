@@ -4,6 +4,11 @@ const { ApolloServer } = require("apollo-server-express");
 const { authMiddleware } = require("./utils/auth");
 const path = require("path");
 const cors = require("cors");
+const {
+  get_Current_User,
+  user_Disconnect,
+  join_User,
+} = require("./socketLogistics");
 
 const socketio = require("socket.io"); // SOCKET IO
 
@@ -50,17 +55,80 @@ const startServer = async () => {
         methods: ["GET", "POST"],
       },
     });
+    //initializing the socket io connection
+    let socketId;
     io.on("connection", (socket) => {
-      // related io code
-      console.log("SERVER MESSAGE: CLIENT CONNECTED");
-      socket.on('disconnect', () => {
-        console.log('CLIENT DISCONNECTED');
+      console.log("SOCKET SERVER IS CONNECTED: SERVER END");
+      //for a new user joining the room
+      socket.on("joinRoom", ({ id, username, roomname }) => {
+        // PROVIDE USERNAME AND CHAT ID
+        //* create user
+        const p_user = join_User(id, username, roomname);
+        console.log("id", id, "p_user.room", p_user.room);
+        socket.join(p_user.room);
+        socketId = id;
       });
 
-      socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+      //user sending message
+      socket.on("chat", (data) => {
+        //gets the room user and the message sent
+        const p_user = get_Current_User(socketId);
+        console.log("chat p_user: ", p_user);
+        console.log("DATA MESSAGE RECIEVED FROM CLIENT: ", data);
+        console.log("id 2", socketId, "p_user.room 2", p_user);
+        io.to(p_user.room).emit("message", {
+          data,
+        });
+      });
+
+      //when the user exits the room
+      socket.on("disconnect", () => {
+        console.log("USER DISCONNECTED");
+        const p_user = get_Current_User(socketId);
+        socket.leave(p_user.room);
       });
     });
+
+    //     io.on("connection", (socket) => {
+    //       console.log("Connected to socket.io");
+    //       socket.on("setup", (userId) => {
+    //         socket.join(userId);
+    //         console.log("SERVER SIDE SOCKET SETUP INIT with id", userId);
+    //         socket.emit("connected", userId);
+    //       });
+
+    //       socket.on("join chat", (room) => {
+    //         socket.join(room);
+    //         console.log("User Joined Room: " + room);
+    //       });
+
+    //       socket.on("new message", (newMessageRecieved) => {
+    //         console.log("newMessageReceived", newMessageRecieved);
+    //         var { addMessage } = newMessageRecieved; // get chat data from message
+    //         console.log("destruct from message SENDER ID:", addMessage.chat);
+
+    //         if (!addMessage.chat.users)
+    //           return console.log("addMessage.chat.users not defined"); //if no users
+
+    //         let chat = addMessage.chat;
+    //         console.log("user array", chat);
+
+    //         // chat.users.forEach((user) => {
+    //         //   // for each user in the chat, chat.users._id
+    //           // if (user._id == addMessage.sender._id) return;
+
+    //           socket.in(chat._id).emit("message recieved", addMessage); //
+    //           console.log("MESSAGES EMITTED BACK TO USER", addMessage);
+    //           console.log("room ID OF MESSAGE/ USER ID", chat._id);
+    //           console.log("MESSAGE RECEIVED ID", addMessage.sender._id);
+    //         // });
+    //       });
+
+    //       socket.off("setup", () => {
+    //         console.log("USER DISCONNECTED");
+    //         socket.leave(userData._id);
+    //       });
+    //     });
   });
 };
 

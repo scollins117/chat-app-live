@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/layout";
 import { useChatContext } from "../../utils/GlobalState";
 import Chat from"../Chat";
 
-const Chatbox = ({user}) => {
+const Chatbox = () => {
   const [state, dispatch] = useChatContext();
   const { currentFriend } = state;
 
@@ -17,7 +17,7 @@ const Chatbox = ({user}) => {
       borderRadius="lg"
       borderWidth="1px"
     >
-      <Chat user={user}/>
+      <Chat/>
     </Box>
   );
 };

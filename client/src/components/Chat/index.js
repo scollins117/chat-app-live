@@ -11,27 +11,24 @@ import { useQuery, useMutation } from "@apollo/client";
 import ProfileModal from "../Profile";
 import { QUERY_CHAT, QUERY_ME } from "../../utils/queries";
 import { useChatContext } from "../../utils/GlobalState";
-import { UPDATE_CURRENT_FRIEND } from "../../utils/actions";
+import { UPDATE_CURRENT_FRIEND, UPDATE_CHAT } from "../../utils/actions";
 import { ADD_MESSAGE } from "../../utils/mutations";
 import io from "socket.io-client"; // SOCKET IO
 
 const socketUrl = "http://localhost:3001"; // SOCKET IO CONNECT
+let socket;
 
-const socket = io(socketUrl, { transports: ["websocket"] });
-
-socket.on("connect", () => {
-  console.log("CLIENT SIDE: SOCKET IO CONNECTED");
-});
-
-const Chat = ({ user }) => {
+const Chat = () => {
   const toast = useToast();
   const [state, dispatch] = useChatContext();
-  const { currentFriend, currentChat } = state;
+  const { currentFriend, currentChat, me } = state;
   const [messages, setMessages] = useState([]);
-  const [socketMessage, setSocketMessage] = useState();
   const [formState, setFormState] = useState();
   const [addMessage] = useMutation(ADD_MESSAGE);
 
+  let messageArr = [];
+
+  // console.log("CHAT MESSAGES ON CHAT LOAD: ", messages);
   //   {
   //   update(cache, { data: { addMessage } }) {
   //     try {
@@ -57,15 +54,47 @@ const Chat = ({ user }) => {
   // });
 
   const { loading, data, refetch } = useQuery(QUERY_CHAT, {
-    variables: { chatId: currentChat },
+    variables: { chatId: currentChat, enabled: !!currentChat },
+    // The query will not execute until the userId exists
   });
+  // if (data) {
+  //   setMessages(data.chat.chatMessages);
+  // }
 
   useEffect(() => {
-    if (data) {
-      setMessages([data.chat.chatMessages]);
-      console.log("currentChat: ", currentChat);
+    if (data && data.chat) {
+      console.log("useEffect Chat Data ", data.chat);
+      dispatch({
+        type: UPDATE_CHAT,
+        chat: data.chat,
+      });
+      // socket.emit("join chat", currentChat);
+      setMessages(data.chat.chatMessages);
+      console.log("USEEFFECT MESSAGES STATE: ", messages);
+      messageArr.push(data.chat.chatMessages);
+
+      const username = me.username;
+      const roomname = currentChat;
+      const id = me._id;
+      console.log(
+        "user name and chat id for socket JoinRoom: ",
+        username,
+        roomname
+      );
+      if (username !== "" && roomname !== "") {
+        socket.emit("joinRoom", { id, username, roomname , currentChat});
+        console.log("======CLIENT JOINED CHAT: ", currentChat);
+      }
     }
-  }, [data]);
+  }, [data, dispatch]);
+
+  useEffect(() => {
+    socket = io(socketUrl, { transports: ["websocket"] });
+
+    socket.on("connect", () => {
+      console.log("CLIENT SIDE: SOCKET IO CONNECTED");
+    });
+  });
 
   const handleClick = () => {
     dispatch({
@@ -75,39 +104,29 @@ const Chat = ({ user }) => {
     console.log("current friend: ", currentFriend);
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
-
   const messageHandler = async (event) => {
     // user hits enter
     if (event.key === "Enter" && event.target.value !== "") {
-      refetch();
-      const message = formState.messageInput; //message from updated form state
+      console.log("(((((============USER HIT ENTER==========)))))");
+      const message = event.target.value; //message from updated form state
+      console.log("MESSAGE going to addMessage: ", message);
+      console.log("CHAT ID going to addMessage: ", currentChat);
+
       try {
         const { data } = await addMessage({
           variables: { messageText: message, chatId: currentChat },
         });
 
-        if (data) {
-          setMessages([...messages, data.addMessage.message]);
-          console.log("data from addMessage: ", data);
+        if (!loading && data) {
+          console.log("data from addMessage: ", data.addMessage);
+          console.log("CURRENT MESSAGE STATE DATA:", messages);
+          const newMessage = data.addMessage;
+          setMessages([...messages, data.addMessage]);
+          messageArr.push(data.addMessage);
+          socket.emit("chat", data.addMessage);
         }
 
-        socket.emit("chat message", message);
-
-        socket.on("chat message", function (msg) {
-          console.log("socket.on 'chat message': ", msg);
-          setSocketMessage(msg);
-          console.log("socket.on 'chat message from state': ", socketMessage);
-          console.log("sock io messages': ", messages);
-        });
-
-        console.log("UPDATED LIST OF MESSAGES: ", messages);
+        // update state with new data
       } catch (e) {
         console.error(e);
         toast({
@@ -122,23 +141,65 @@ const Chat = ({ user }) => {
     }
   };
 
-  // import { Avatar } from "@chakra-ui/avatar";
-  // import { Tooltip } from "@chakra-ui/tooltip";
-  // import ScrollableFeed from "react-scrollable-feed";
-  // import {
-  //   isLastMessage,
-  //   isSameSender,
-  //   isSameSenderMargin,
-  //   isSameUser,
-  // } from "../config/ChatLogics";
-  // import { ChatState } from "../Context/ChatProvider";
+  useEffect(() => {
+    socket.on("message", (data) => {
+      console.log("CHAT MESSAGES ON CHAT LOAD: ", messages);
+      let temp = data.data;
+      // const idFunc = () => {
+      //   return Math.random().toString(36).slice(2);
+      // };
+      // let id = Math.random().toString(36).slice(2);
+      // temp.push({
+      //   id: id,
+      //   userId: data.userId,
+      //   username: data.username,
+      //   messageText: data.text,
+      // });
+      console.log("ON RECEIVER MESSAGES STATE: ", messages);
+      console.log("***************PUSHED TO MESSAGE STATE: ", temp);
+      setMessages([...messages, temp]);
+      return () => {
+        // This is the cleanup function
+      };
+    });
+  }, [socket]);
 
-  // const ScrollableChat = ({ messages }) => {
-  //   const { user } = ChatState();
+  // useEffect(() => {
+  //   socket.emit("setup", user);
+  //   console.log("user info to socket setup: ", user);
+  //   socket.on("connected", () => setSocketConnected(true));
+
+  //   // eslint-disable-next-line
+  // }, []);
+
+  // // useEffect(() => {
+  // //   refetch();
+
+  // //   selectedChatCompare = currentChat; //
+  // //   // eslint-disable-next-line
+  // // }, [currentChat]);
+
+  // useEffect(() => {
+  // socket.on("message recieved", (newMessageRecieved) => {
+  //   console.log("MESSAGE RECIEVED: ", newMessageRecieved);
+  //   // if (
+  //   //   !selectedChatCompare || // if chat is not selected or doesn't match current chat
+  //   //   selectedChatCompare._id !== newMessageRecieved.chat._id
+  //   // ) {
+  //   //   refetch();
+  //   // } else {
+  //     // dispatch({
+  //     //   type: ADD_MESSAGE,
+  //     //   chat: [{ ...newMessageRecieved }],
+  //     // });
+  //     refetch();
+  //   // }
+  //   });
+  // });
 
   return (
     <>
-      {currentFriend ? (
+      {currentFriend && messages ? (
         <>
           <Text
             fontSize={{ base: "28px", md: "30px" }}
@@ -158,8 +219,6 @@ const Chat = ({ user }) => {
             <>
               {currentFriend.username}
               <ProfileModal
-                username={currentFriend.username}
-                email={currentFriend.email}
               />
             </>
           </Text>
@@ -176,7 +235,7 @@ const Chat = ({ user }) => {
           >
             <div className="messages">
               {/* ----------------------------------------------------------------- */}
-              <ChatFeed user={user} />
+              <ChatFeed messages={messages} />
             </div>
             <FormControl
               onKeyDown={messageHandler}
@@ -184,24 +243,12 @@ const Chat = ({ user }) => {
               isRequired
               mt={3}
             >
-              {/* {istyping ? (
-                <div>
-                  <Lottie
-                    options={defaultOptions}
-                    // height={50}
-                    width={70}
-                    style={{ marginBottom: 15, marginLeft: 0 }}
-                  />
-                </div>
-              ) : (
-                <></>
-              )} */}
               <Input
                 variant="filled"
                 bg="#E0E0E0"
                 placeholder="Enter a message.."
                 name="messageInput"
-                onChange={handleChange}
+                // onChange={handleChange}
               />
             </FormControl>
           </Box>
@@ -209,7 +256,7 @@ const Chat = ({ user }) => {
       ) : (
         <Box d="flex" alignItems="center" justifyContent="center" h="100%">
           <Text fontSize="3xl" pb={3} fontFamily="Varela Round">
-            Click on a user to start chatting
+            Add a friend and Juhst Chat!
           </Text>
         </Box>
       )}

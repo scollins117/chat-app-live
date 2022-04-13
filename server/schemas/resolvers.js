@@ -33,7 +33,7 @@ const resolvers = {
           }
         : {};
       console.log("keyword:", keyword);
-      return await User.find(keyword)
+      return await User.find(keyword).find({ _id: { $ne: context.user._id } })
         .select("-__v -password")
         .populate("messages")
         .populate("friends");
@@ -114,27 +114,59 @@ const resolvers = {
       console.log("chatId: ", chatId);
       console.log("context.user._id: ", context.user._id);
       if (context.user) {
-        const message = await Message.create({
+        if (!messageText || !chatId) {
+          console.log("Invalid data passed into request");
+          return res.sendStatus(400);
+        }
+
+        var newMessage = {
           chat: chatId,
           sender: context.user._id,
           messageText: messageText,
-        });
+        };
 
-        const messageAddedToChat = await Chat.findByIdAndUpdate(
-          { _id: chatId },
-          { $push: { chatMessages: message._id } },
-          { new: true }
-        );
+        try {
+          var message = await Message.create(newMessage);
 
-        await User.findByIdAndUpdate(
-          { _id: context.user._id },
-          { $push: { messages: message._id } },
-          { new: true }
-        );
-        console.log("messageAddedToChat:", messageAddedToChat);
+          message = await message.populate("sender", "username");
+          message = await message.populate("chat");
+          message = await User.populate(message, {
+            path: "chat.users",
+            select: "username email",
+          });
+
+          await Chat.findByIdAndUpdate(
+            { _id: chatId },
+            { $push: { chatMessages: message._id } },
+            { new: true }
+          );
+        } catch (error) {
+          throw new Error(error.message);
+        }
+
+        // if (context.user) {
+        //   const message = await Message.create({
+        //     chat: chatId,
+        //     sender: context.user._id,
+        //     messageText: messageText,
+        //   });
+
+        //   const messageAddedToChat = await Chat.findByIdAndUpdate(
+        //     { _id: chatId },
+        //     { $push: { chatMessages: message._id } },
+        //     { new: true }
+        //   );
+
+        //   await User.findByIdAndUpdate(
+        //     { _id: context.user._id },
+        //     { $push: { messages: message._id } },
+        //     { new: true }
+        //   );
+        //   console.log("messageAddedToChat:", messageAddedToChat);
+        //   return message;
+        // }
         return message;
       }
-
       throw new AuthenticationError("You need to be logged in!");
     },
     addFriend: async (parent, { friendId }, context) => {

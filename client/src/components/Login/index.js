@@ -36,6 +36,7 @@ const Login = () => {
   };
 
   const handleFormSubmit = async (event) => {
+    console.log("(((((=========LOGIN CLICKED========)))))");
     event.preventDefault();
 
     try {

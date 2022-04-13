@@ -10,37 +10,35 @@ import FriendList from "../components/FriendList";
 import Auth from "../utils/auth";
 import { QUERY_ME } from "../utils/queries";
 import { useChatContext } from "../utils/GlobalState";
-import { UPDATE_FRIENDS } from "../utils/actions";
+import { UPDATE_ME } from "../utils/actions";
+
 
 const Chat = () => {
   const loggedIn = Auth.loggedIn();
   const [state, dispatch] = useChatContext();
 
-  const { friends } = state;
+  const { me } = state;
 
   const { loading, data } = useQuery(QUERY_ME);
-  if (!loading) {
-    console.log("my friends list from global state: ", friends);
-    console.log("QUERY_ME data: ", data);
-  }
 
   useEffect(() => {
     if (data) {
       dispatch({
-        type: UPDATE_FRIENDS,
-        friends: data.me.friends,
+        type: UPDATE_ME,
+        me: data.me,
       });
     }
   }, [data, dispatch]);
 
+ 
   return (
     <div style={{ width: "100%" }}>
       {loggedIn && !loading && data !== null && (
-        <Header username={data.me.username} email={data.me.email} />
+        <Header/>
       )}
       <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-        {loggedIn && !loading && <FriendList data={data} />}
-        {loggedIn && !loading && <Chatbox user={data.me._id} />}
+        {loggedIn && !loading && <FriendList />}
+        {loggedIn && !loading && <Chatbox/>}
       </Box>
     </div>
   );
