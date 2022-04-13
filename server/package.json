@@ -1,0 +1,43 @@
+{
+  "name": "chat-app-live",
+  "version": "1.0.0",
+  "description": "MERN chat application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "watch": "nodemon",
+    "seed": "node seeders/seeds.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tasevski87/chat-app-live.git"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tasevski87/chat-app-live/issues"
+  },
+  "homepage": "https://github.com/Tasevski87/chat-app-live#readme",
+  "dependencies": {
+    "apollo-server": "^3.6.7",
+    "apollo-server-express": "^3.6.7",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "express-session": "^1.17.2",
+    "faker": "^4.1.0",
+    "graphql": "^16.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.10",
+    "react-router-dom": "^6.3.0",
+    "socket.io": "^4.4.1",
+    "stripe": "^8.215.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
