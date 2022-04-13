@@ -9,7 +9,7 @@ import ChatFeed from "../ChatFeed";
 import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import ProfileModal from "../Profile";
-import { QUERY_CHAT/*, QUERY_ME*/ } from "../../utils/queries";
+import { QUERY_CHAT, QUERY_ME } from "../../utils/queries";
 import { useChatContext } from "../../utils/GlobalState";
 import { UPDATE_CURRENT_FRIEND, UPDATE_CHAT } from "../../utils/actions";
 import { ADD_MESSAGE } from "../../utils/mutations";
@@ -23,7 +23,7 @@ const Chat = () => {
   const [state, dispatch] = useChatContext();
   const { currentFriend, currentChat, me } = state;
   const [messages, setMessages] = useState([]);
-  // const [formState, setFormState] = useState();
+  const [formState, setFormState] = useState();
   const [addMessage] = useMutation(ADD_MESSAGE);
 
   // console.log("CHAT MESSAGES ON CHAT LOAD: ", messages);
@@ -69,7 +69,7 @@ const Chat = () => {
 
       const username = me.username;
       const roomname = currentChat;
-      // const id = me._id;
+      const id = me._id;
       console.log(
         "user name and chat id for socket JoinRoom: ",
         username,
