@@ -29,7 +29,7 @@
 -------------------------------------------------
 
 ## Installation
-In order to install `Juhst Chat` application user need to visit my public repo where code is avaiable. After copy the code and instaling to the local machine, User need to install Node.js and all the dependencies so the app can work. After installing Node.js In the top of the root app user need to open terminal and run the command npm install, next on client side folder need to open integrated terminal and run command npm install, and last is server side folder open integrated terminal and run command npm install. Aftr all dependecies are installed app can be started in the top of the root terminal with command npm run develop.
+In order to install `Juhst Chat` application user need to visit my public repo where code is avaiable. After copy the code and instaling to the local machine, User need to install `Node.js` and all the dependencies so the app can work. After installing `Node.js` In the top of the root app user need to open terminal and run the command `npm install`, next on client side folder need to open integrated terminal and run command `npm install`, and last is server side folder open integrated terminal and run command `npm install`. Aftr all dependecies are installed app can be started in the top of the root terminal with command npm `run develop`.
 
 ## Usage
 Here is video example of the application in use:
@@ -49,7 +49,7 @@ https://github.com/sirTedDanson/
 MIT
 
 ## Program Languages 
-HTML, CSS, Javascript, Node.js
+`HTML`, `CSS`, `Javascript`, `Node.js`
 
 ## Tests
 Testing was done with Graphql. Here is example:
@@ -73,6 +73,10 @@ https://drive.google.com/file/d/1ee-Xw1ZBSZTI5ATQVeStMCq2KMAsCVdr/view
 ## GitHub
 
 https://github.com/Tasevski87
+
+https://github.com/scollins117
+
+https://github.com/sirTedDanson/
 
 ## GitHub-Repo
 https://github.com/Tasevski87/chat-app-live/branches
