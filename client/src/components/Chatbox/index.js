@@ -7,14 +7,8 @@ const Chatbox = () => {
   const { currentFriend } = state;
 
   return (
-<<<<<<< HEAD
       <>
         {console.log("COMPONENT:  FRIEND_BOX")}
-=======
-    <>
-      {console.log("COMPONENT:  CHAT CONTAINER")}
-      {currentFriend && (
->>>>>>> heroku-debug
         <Box
           display={{ base: currentFriend ? "flex" : "none", md: "flex" }}
           alignItems="center"
@@ -28,13 +22,7 @@ const Chatbox = () => {
         >
           <Chat />
         </Box>
-<<<<<<< HEAD
       </>
-=======
-      )}
-      ;
-    </>
->>>>>>> heroku-debug
   );
 };
 

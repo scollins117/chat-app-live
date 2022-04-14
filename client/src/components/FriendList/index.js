@@ -53,12 +53,7 @@ const FriendList = () => {
   };
 
   return (
-<<<<<<< HEAD
     <> {console.log("COMPONENT:  FRIEND_LIST")}
-=======
-    <>
-      {console.log("COMPONENT:  FRIENDS_LIST")}
->>>>>>> heroku-debug
       <Box
         d={{ base: currentFriend ? "none" : "flex", md: "flex" }}
         flexDir="column"

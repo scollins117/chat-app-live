@@ -40,7 +40,8 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <ChakraProvider theme={theme}> 
+        <ChakraProvider theme={theme}>
+          <ChatProvider>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <div className="App">
                 <Switch>
@@ -55,6 +56,7 @@ function App() {
                 {/* <Footer  */}
               </div>
             </Stack>
+          </ChatProvider>
         </ChakraProvider>
       </Router>
     </ApolloProvider>

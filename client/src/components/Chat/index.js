@@ -85,6 +85,7 @@ const Chat = () => {
     socket.on("connect", () => {
       console.log("CLIENT SIDE: SOCKET IO CONNECTED");
     });
+    console.log("socket setup data:  ", me);
     socket.emit("setup", me);
   });
 
@@ -153,11 +154,7 @@ const Chat = () => {
   }, [socket]);
 
   return (
-<<<<<<< HEAD
     <> {console.log("COMPONENT:  CHAT")}
-=======
-    <> {console.log("COMPONENT:  ___CHAT___")}
->>>>>>> heroku-debug
       {currentFriend && messages ? (
         <>
           <Text

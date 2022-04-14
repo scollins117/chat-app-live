@@ -42,7 +42,6 @@ function Header() {
     Auth.logout();
   };
 
-  
   const [searchInput, setSearchInput] = useState();
   const [searchResult, setSearchResult] = useState();
   const [searchItem, setSearchItem] = useState("");
@@ -134,12 +133,7 @@ function Header() {
   };
 
   return (
-<<<<<<< HEAD
     <> {console.log("COMPONENT:  HEADER")}
-=======
-    
-    <>{console.log("COMPONENT:  HEADER")}
->>>>>>> heroku-debug
       <Box
         d="flex"
         justifyContent="space-between"

@@ -38,7 +38,7 @@ const Signup = () => {
       [name]: value,
     });
   };
-
+  
   // submit form (notice the async!)
   const handleFormSubmit = async (event) => {
     console.log("formstate: ", formState);
@@ -73,7 +73,6 @@ const Signup = () => {
   };
 
   return (
-<<<<<<< HEAD
     <VStack spacing="5px">{console.log("COMPONENT:  SIGNUP")}
       <FormControl id="signup-username" isRequired>
         <FormLabel>Name</FormLabel>
@@ -95,62 +94,18 @@ const Signup = () => {
       <FormControl id="signup-password" isRequired>
         <FormLabel>Password</FormLabel>
         <InputGroup size="md">
-=======
-    <>{console.log("COMPONENT:  SINGUP")}
-      {" "}
-      <VStack spacing="5px">
-        <FormControl id="signup-username" isRequired>
-          <FormLabel>Name</FormLabel>
->>>>>>> heroku-debug
           <Input
-            name="username"
-            placeholder="Enter Your Name"
-            onChange={handleChange}
-          />
-<<<<<<< HEAD
-=======
-        </FormControl>
-        <FormControl id="signup-email" isRequired>
-          <FormLabel>Email Address</FormLabel>
-          <Input
-            name="email"
-            type="email"
-            placeholder="Enter Your Email Address"
-            onChange={handleChange}
-          />
-        </FormControl>
-        <FormControl id="signup-password" isRequired>
-          <FormLabel>Password</FormLabel>
-          <InputGroup size="md">
-            <Input
-              name="password"
-              type={showOpen ? "text" : "password"}
-              placeholder="Enter Password"
-              onChange={handleChange}
-            />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={toggleShow}>
-                {showOpen ? "Hide" : "Show"}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
-        {/* <FormControl id="confirm-password" isRequired>
-        <FormLabel>Confirm Password</FormLabel>
-        <InputGroup size="md">
-          <Input
+            name="password"
             type={showOpen ? "text" : "password"}
-            placeholder="Confirm password"
-            onChange={handleConfirm}
+            placeholder="Enter Password"
+            onChange={handleChange}
           />
->>>>>>> heroku-debug
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={toggleShow}>
               {showOpen ? "Hide" : "Show"}
             </Button>
           </InputRightElement>
         </InputGroup>
-<<<<<<< HEAD
       </FormControl>
       <Button
         colorScheme="blue"
@@ -161,19 +116,6 @@ const Signup = () => {
         Sign Up
       </Button>
     </VStack>
-=======
-      </FormControl> */}
-        <Button
-          colorScheme="blue"
-          width="100%"
-          style={{ marginTop: 15 }}
-          onClick={handleFormSubmit}
-        >
-          Sign Up
-        </Button>
-      </VStack>
-    </>
->>>>>>> heroku-debug
   );
 };
 

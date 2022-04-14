@@ -8,11 +8,12 @@ const ChatProvider = ({ value = [], ...props }) => {
   const [state, dispatch] = useChatReducer({
     showOpen: false,
     chatOpen: false,
-    currentFriend: "",
+    chatOn: [],
     me: {},
     chat: {},
     messages: [],
     friends: [],
+    currentFriend: "",
     currentChat: "",
   });
   // use this to confirm it works!
