@@ -14,13 +14,11 @@ import {
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    // if action type value is the value of `UPDATE_PRODUCTS`, return a new state object with an updated products array
     case TOGGLE_CHAT:
       return {
         ...state,
         chatOpen: !state.chatOpen,
       };
-    // if action type value is the value of `UPDATE_CATEGORIES`, return a new state object with an updated categories array
     case TOGGLE_SHOW:
       return {
         ...state,

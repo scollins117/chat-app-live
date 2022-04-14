@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 
 import Auth from "../../utils/auth";
-import { useChatContext } from '../../utils/GlobalState';
+import { useChatContext } from "../../utils/GlobalState";
 import { LOGIN_USER } from "../../utils/mutations";
-import { TOGGLE_SHOW } from '../../utils/actions';
+import { TOGGLE_SHOW } from "../../utils/actions";
 
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
@@ -16,8 +16,8 @@ const Login = () => {
   const toast = useToast();
   const [login, { error }] = useMutation(LOGIN_USER);
   const [state, dispatch] = useChatContext();
-  
-  const {showOpen} = state
+
+  const { showOpen } = state;
 
   function toggleShow() {
     dispatch({ type: TOGGLE_SHOW });
@@ -25,14 +25,12 @@ const Login = () => {
 
   const [formState, setFormState] = useState({ email: "", password: "" });
   const handleChange = (event) => {
-
     const { name, value } = event.target;
 
     setFormState({
       ...formState,
       [name]: value,
     });
-
   };
 
   const handleFormSubmit = async (event) => {
@@ -65,44 +63,43 @@ const Login = () => {
     }
   };
   return (
-    <VStack spacing="10px">
-      <FormControl id="login-email" isRequired>
-        <FormLabel>Email Address</FormLabel>
-        <Input
-          name="email"
-          // value={email}
-          type="email"
-          placeholder="Enter Your Email Address"
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl id="login-password" isRequired>
-        <FormLabel>Password</FormLabel>
-        <InputGroup size="md">
+    <> {console.log("COMPONENT:  LOGIN")}
+      <VStack spacing="10px">
+        <FormControl id="login-email" isRequired>
+          <FormLabel>Email Address</FormLabel>
           <Input
-            name="password"
-            // value={password}
+            name="email"
+            type="email"
+            placeholder="Enter Your Email Address"
             onChange={handleChange}
-            type={showOpen ? "text" : "password"}
-            placeholder="Enter password"
           />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={toggleShow}>
-              {showOpen ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
-      <Button
-        colorScheme="blue"
-        width="100%"
-        style={{ marginTop: 15 }}
-        onClick={handleFormSubmit}
-        // isLoading={loading}
-      >
-        Login
-      </Button>
-    </VStack>
+        </FormControl>
+        <FormControl id="login-password" isRequired>
+          <FormLabel>Password</FormLabel>
+          <InputGroup size="md">
+            <Input
+              name="password"
+              onChange={handleChange}
+              type={showOpen ? "text" : "password"}
+              placeholder="Enter password"
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={toggleShow}>
+                {showOpen ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+        <Button
+          colorScheme="blue"
+          width="100%"
+          style={{ marginTop: 15 }}
+          onClick={handleFormSubmit}
+        >
+          Login
+        </Button>
+      </VStack>
+    </>
   );
 };
 

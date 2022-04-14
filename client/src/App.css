@@ -12,3 +12,7 @@ html, body
   background-position: top;
   background-size: cover;
 }
+
+.semi-clear {
+  opacity: 0.93;
+}
