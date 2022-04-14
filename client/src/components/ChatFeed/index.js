@@ -10,7 +10,11 @@ const ChatFeed = ({ messages }) => {
   console.log("messages from global state AT FEED", messages);
   return (
     <ScrollableFeed> {console.log("COMPONENT:  CHAT_FEED")}
+<<<<<<< HEAD
       {me && messages &&
+=======
+      {messages && me &&
+>>>>>>> heroku-debug
         messages.map((m, i) => (
           <div style={{ display: "flex" }} key={m._id}>
             <Tooltip label={m.username} placement="bottom-end" hasArrow>

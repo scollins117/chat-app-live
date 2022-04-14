@@ -25,12 +25,6 @@ export const reducer = (state, action) => {
         showOpen: !state.showOpen,
       };
 
-    case UPDATE_CURRENT_SEARCH:
-      return {
-        ...state,
-        currentSearch: action.currentSearch,
-      };
-
     case UPDATE_CURRENT_FRIEND:
       return {
         ...state,

@@ -63,7 +63,12 @@ const Login = () => {
     }
   };
   return (
+<<<<<<< HEAD
     <> {console.log("COMPONENT:  LOGIN")}
+=======
+    <>
+      {console.log("COMPONENT:  LOGIN")}
+>>>>>>> heroku-debug
       <VStack spacing="10px">
         <FormControl id="login-email" isRequired>
           <FormLabel>Email Address</FormLabel>
