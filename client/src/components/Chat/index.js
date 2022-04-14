@@ -15,7 +15,7 @@ import { UPDATE_CURRENT_FRIEND, UPDATE_CHAT } from "../../utils/actions";
 import { ADD_MESSAGE } from "../../utils/mutations";
 import io from "socket.io-client"; // SOCKET IO
 
-const socketUrl = "https://agile-anchorage-60356.herokuapp.com"; // SOCKET IO CONNECT DEPLOYED: https://agile-anchorage-60356.herokuapp.com/ LOCAL ::http://localhost:3001
+const socketUrl = "http://localhost:3001"; // SOCKET IO CONNECT DEPLOYED: https://agile-anchorage-60356.herokuapp.com/ LOCAL ::http://localhost:3001
 let socket;
 
 const Chat = () => {

@@ -51,7 +51,6 @@ const startServer = async () => {
       },
     });
     //initializing the socket io connection
-    let socketId;
     io.on("connection", (socket) => {
       console.log("SOCKET SERVER IS CONNECTED: SERVER END");
       //for a new user joining the room
