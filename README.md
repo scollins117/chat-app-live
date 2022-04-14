@@ -79,6 +79,6 @@ https://github.com/scollins117
 https://github.com/sirTedDanson/
 
 ## GitHub-Repo
-https://github.com/Tasevski87/chat-app-live/branches
+https://github.com/Tasevski87/chat-app-live
 
 
