@@ -31,13 +31,12 @@ import { Avatar } from "@chakra-ui/avatar";
 import { useToast } from "@chakra-ui/toast";
 
 
-function Header({ username, email }) {
+function Header() {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [addFriend] = useMutation(ADD_FRIEND_DB);
 
   const [state, dispatch] = useChatContext();
-  const { me } = state;
 
   const logout = (event) => {
     Auth.logout();
@@ -134,7 +133,7 @@ function Header({ username, email }) {
   };
 
   return (
-    <>
+    <> {console.log("COMPONENT:  HEADER")}
       <Box
         d="flex"
         justifyContent="space-between"
@@ -181,6 +180,7 @@ function Header({ username, email }) {
                 placeholder="Search by username OR"
                 mr={2}
                 name="search"
+                autoComplete="off"
                 onChange={handleChange}
               />
               <Button onClick={handleSearch}>Go</Button>

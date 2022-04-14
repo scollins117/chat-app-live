@@ -102,6 +102,7 @@ const Chat = () => {
     if (event.key === "Enter" && event.target.value !== "") {
       console.log("(((((============USER HIT ENTER==========)))))");
       const message = event.target.value; //message from updated form state
+      event.target.value = ""
       console.log("MESSAGE going to addMessage: ", message);
       console.log("CHAT ID going to addMessage: ", currentChat);
 
@@ -153,7 +154,7 @@ const Chat = () => {
   }, [socket]);
 
   return (
-    <>
+    <> {console.log("COMPONENT:  CHAT")}
       {currentFriend && messages ? (
         <>
           <Text
@@ -203,6 +204,7 @@ const Chat = () => {
                 bg="#E0E0E0"
                 placeholder="Enter a message.."
                 name="messageInput"
+                autoComplete="off"
                 // onChange={handleChange}
               />
             </FormControl>

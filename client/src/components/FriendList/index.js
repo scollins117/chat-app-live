@@ -53,61 +53,62 @@ const FriendList = () => {
   };
 
   return (
-    <Box
-      d={{ base: currentFriend ? "none" : "flex", md: "flex" }}
-      flexDir="column"
-      alignItems="center"
-      p={3}
-      bg="white"
-      w={{ base: "100%", md: "31%" }}
-      borderRadius="lg"
-      borderWidth="1px"
-      className="semi-clear"
-    >
+    <> {console.log("COMPONENT:  FRIEND_LIST")}
       <Box
-        pb={3}
-        px={3}
-        fontSize={{ base: "28px", md: "30px" }}
-        fontFamily="Varela Round"
-        d="flex"
-        w="100%"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        My Friends
-      </Box>
-      <Box
-        d="flex"
+        d={{ base: currentFriend ? "none" : "flex", md: "flex" }}
         flexDir="column"
+        alignItems="center"
         p={3}
-        bg="#F8F8F8"
-        w="100%"
-        h="100%"
+        bg="white"
+        w={{ base: "100%", md: "31%" }}
         borderRadius="lg"
-        overflowY="hidden"
+        borderWidth="1px"
+        className="semi-clear"
       >
-        {me && me.friends && (
-          <Stack overflowY="scroll">
-            {me.friends.map((friend) => (
-              <Box
-                d="flex"
-                w="100%"
-                justifyContent="space-between"
-                alignItems="center"
-                onClick={() => {
-                  handleClick(friend);
-                }}
-                cursor="pointer"
-                bg={currentFriend._id === friend._id ? "#619c5d" : "#E8E8E8"}
-                color={currentFriend._id === friend._id ? "white" : "black"}
-                px={3}
-                py={2}
-                borderRadius="lg"
-                key={friend._id}
-              >
-                <Text>{friend.username}</Text>
-                <CloseButton alignSelf={"right"} />
-                {/* {chat.latestMessage && (
+        <Box
+          pb={3}
+          px={3}
+          fontSize={{ base: "28px", md: "30px" }}
+          fontFamily="Varela Round"
+          d="flex"
+          w="100%"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          My Friends
+        </Box>
+        <Box
+          d="flex"
+          flexDir="column"
+          p={3}
+          bg="#F8F8F8"
+          w="100%"
+          h="100%"
+          borderRadius="lg"
+          overflowY="hidden"
+        >
+          {me && me.friends && (
+            <Stack overflowY="scroll">
+              {me.friends.map((friend) => (
+                <Box
+                  d="flex"
+                  w="100%"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  onClick={() => {
+                    handleClick(friend);
+                  }}
+                  cursor="pointer"
+                  bg={currentFriend._id === friend._id ? "#619c5d" : "#E8E8E8"}
+                  color={currentFriend._id === friend._id ? "white" : "black"}
+                  px={3}
+                  py={2}
+                  borderRadius="lg"
+                  key={friend._id}
+                >
+                  <Text>{friend.username}</Text>
+                  <CloseButton alignSelf={"right"} />
+                  {/* {chat.latestMessage && (
                   <Text fontSize="xs">
                     <b>{chat.latestMessage.sender.name} : </b>
                     {chat.latestMessage.content.length > 50
@@ -115,12 +116,13 @@ const FriendList = () => {
                       : chat.latestMessage.content}
                   </Text>
                 )} */}
-              </Box>
-            ))}
-          </Stack>
-        )}
+                </Box>
+              ))}
+            </Stack>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

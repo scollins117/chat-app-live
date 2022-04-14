@@ -73,7 +73,7 @@ const Signup = () => {
   };
 
   return (
-    <VStack spacing="5px">
+    <VStack spacing="5px">{console.log("COMPONENT:  SIGNUP")}
       <FormControl id="signup-username" isRequired>
         <FormLabel>Name</FormLabel>
         <Input
@@ -107,21 +107,6 @@ const Signup = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      {/* <FormControl id="confirm-password" isRequired>
-        <FormLabel>Confirm Password</FormLabel>
-        <InputGroup size="md">
-          <Input
-            type={showOpen ? "text" : "password"}
-            placeholder="Confirm password"
-            onChange={handleConfirm}
-          />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={toggleShow}>
-              {showOpen ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl> */}
       <Button
         colorScheme="blue"
         width="100%"

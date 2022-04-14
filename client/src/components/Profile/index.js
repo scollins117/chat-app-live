@@ -19,11 +19,10 @@ const ProfileModal = ({ chatFriend }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [state, dispatch] = useChatContext();
   const { me } = state;
-  console.log("chatfriend", chatFriend)
-
+  console.log("chatfriend", chatFriend);
 
   return (
-    <>
+    <>{console.log("COMPONENT:  PROFILE")}
       <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
       {chatFriend ? (
         <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>

@@ -5,12 +5,12 @@ import { useChatContext } from "../../utils/GlobalState";
 
 const ChatFeed = ({ messages }) => {
   const [state, dispatch] = useChatContext();
-  const {chat, me } = state;
+  const { me } = state;
 
   console.log("messages from global state AT FEED", messages);
   return (
-    <ScrollableFeed>
-      {messages &&
+    <ScrollableFeed> {console.log("COMPONENT:  CHAT_FEED")}
+      {me && messages &&
         messages.map((m, i) => (
           <div style={{ display: "flex" }} key={m._id}>
             <Tooltip label={m.username} placement="bottom-end" hasArrow>
